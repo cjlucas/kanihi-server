@@ -1,0 +1,519 @@
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+  [1m[36m (0.0ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.6ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.1ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to CreateTracks (20130613182342)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "tracks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "track_name" varchar(255), "subtitle" varchar(255), "track_num" integer, "track_total" integer, "track_artist" varchar(255), "track_artist_sort_order" varchar(255), "album_artist" varchar(255), "album_artist_sort_order" varchar(255), "album_name" varchar(255), "genre" varchar(255), "date" date, "original_date" date, "disc_num" integer, "disc_total" integer, "disc_subtitle" varchar(255), "group" varchar(255), "lyrics" varchar(255), "composer" varchar(255), "mood" varchar(255), "compilation" boolean, "comment" varchar(255), "album_art_id" integer, "duration" integer, "mtime" integer, "size" integer, "uri" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182342')[0m
+  [1m[35m (0.5ms)[0m  commit transaction
+Migrating to CreateAlbumArts (20130613182427)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "album_arts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "data" blob, "checksum" varchar(255), "size" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182427')[0m
+  [1m[35m (0.4ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+
+
+Started GET "/assets/rails.png" for 127.0.0.1 at 2013-06-13 11:41:48 -0700
+Served asset /rails.png - 304 Not Modified (2ms)
+
+
+Started GET "/tracks" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Processing by TracksController#index as HTML
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" [0m
+  Rendered tracks/index.html.erb within layouts/application (1.6ms)
+Compiled album_arts.css  (2ms)  (pid 48428)
+Compiled scaffolds.css  (6ms)  (pid 48428)
+Compiled tracks.css  (1ms)  (pid 48428)
+Compiled application.css  (18ms)  (pid 48428)
+Compiled jquery.js  (2ms)  (pid 48428)
+Compiled jquery_ujs.js  (0ms)  (pid 48428)
+Compiled album_arts.js  (50ms)  (pid 48428)
+Compiled tracks.js  (46ms)  (pid 48428)
+Compiled application.js  (134ms)  (pid 48428)
+Completed 200 OK in 216ms (Views: 205.6ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /application.css - 304 Not Modified (8ms)
+
+
+Started GET "/assets/album_arts.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /album_arts.css - 200 OK (1ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /scaffolds.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/tracks.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /tracks.css - 200 OK (1ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /jquery.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /jquery_ujs.js - 304 Not Modified (2ms)
+
+
+Started GET "/assets/album_arts.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /album_arts.js - 200 OK (1ms)
+
+
+Started GET "/assets/tracks.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /tracks.js - 200 OK (1ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:51 -0700
+Served asset /application.js - 200 OK (3ms)
+
+
+Started GET "/tracks/new" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Processing by TracksController#new as HTML
+  Rendered tracks/_form.html.erb (32.0ms)
+  Rendered tracks/new.html.erb within layouts/application (34.6ms)
+Completed 200 OK in 63ms (Views: 45.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /application.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/album_arts.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /album_arts.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /scaffolds.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tracks.css?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /tracks.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/album_arts.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /album_arts.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tracks.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /tracks.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-06-13 11:41:53 -0700
+Served asset /application.js - 304 Not Modified (0ms)
+
+
+Started GET "/tracks/new.json" for 127.0.0.1 at 2013-06-13 11:42:07 -0700
+Processing by TracksController#new as JSON
+Completed 200 OK in 1ms (Views: 0.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/tracks/new.json" for 127.0.0.1 at 2013-06-13 11:42:13 -0700
+Processing by TracksController#new as JSON
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.0ms)
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateTracks (20130613182342)
+Migrating to CreateAlbumArts (20130613182427)
+  [1m[35m (0.0ms)[0m  select sqlite_version(*)
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Processing by TracksController#index as HTML
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" [0m
+  Rendered tracks/index.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 68ms (Views: 27.2ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/assets/album_arts.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /album_arts.css - 304 Not Modified (2ms)
+
+
+Started GET "/assets/tracks.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /tracks.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /application.css - 304 Not Modified (27ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /jquery.js - 304 Not Modified (3ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /scaffolds.css - 304 Not Modified (1ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /jquery_ujs.js - 304 Not Modified (4ms)
+
+
+Started GET "/assets/tracks.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /tracks.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/album_arts.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /album_arts.js - 304 Not Modified (1ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:20 -0700
+Served asset /application.js - 304 Not Modified (3ms)
+
+
+Started GET "/tracks/1" for 127.0.0.1 at 2013-06-13 12:45:21 -0700
+Processing by TracksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mTrack Load (0.2ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "1"]]
+  Rendered tracks/show.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 12ms (Views: 10.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/tracks.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /tracks.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/album_arts.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /album_arts.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /application.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /scaffolds.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/album_arts.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /album_arts.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tracks.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /tracks.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-06-13 12:45:22 -0700
+Served asset /application.js - 304 Not Modified (0ms)
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (4.0ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.6ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.0ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to CreateTracks (20130613182342)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "tracks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "track_name" varchar(255), "subtitle" varchar(255), "track_num" integer, "track_total" integer, "track_artist" varchar(255), "track_artist_sort_order" varchar(255), "album_artist" varchar(255), "album_artist_sort_order" varchar(255), "album_name" varchar(255), "genre" varchar(255), "date" datetime, "original_date" datetime, "disc_num" integer, "disc_total" integer, "disc_subtitle" varchar(255), "group" varchar(255), "lyrics" varchar(255), "composer" varchar(255), "mood" varchar(255), "compilation" boolean, "comment" varchar(255), "album_art_id" integer, "duration" integer, "mtime" datetime, "size" integer, "uri" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182342')[0m
+  [1m[35m (0.4ms)[0m  commit transaction
+Migrating to CreateAlbumArts (20130613182427)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "album_arts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "data" blob, "checksum" varchar(255), "size" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182427')[0m
+  [1m[35m (0.5ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.5ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35m (0.0ms)[0m  SELECT "schema_migrations"."version" FROM "schema_migrations" 
+Migrating to CreateTracks (20130613182342)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "tracks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "track_name" varchar(255), "subtitle" varchar(255), "track_num" integer, "track_total" integer, "track_artist" varchar(255), "track_artist_sort_order" varchar(255), "album_artist" varchar(255), "album_artist_sort_order" varchar(255), "album_name" varchar(255), "genre" varchar(255), "date" datetime, "original_date" datetime, "disc_num" integer, "disc_total" integer, "disc_subtitle" varchar(255), "group" varchar(255), "lyrics" varchar(255), "composer" varchar(255), "mood" varchar(255), "compilation" boolean, "comment" varchar(255), "album_art_id" integer, "duration" integer, "mtime" datetime, "size" integer, "uri" varchar(255), "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182342')[0m
+  [1m[35m (0.4ms)[0m  commit transaction
+Migrating to CreateAlbumArts (20130613182427)
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "album_arts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "data" blob, "checksum" varchar(255), "size" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20130613182427')[0m
+  [1m[35m (0.3ms)[0m  commit transaction
+  [1m[36m (0.1ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks/1" for 127.0.0.1 at 2013-06-13 12:55:13 -0700
+Processing by TracksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "1"]]
+Completed 404 Not Found in 2ms
+
+ActiveRecord::RecordNotFound (Couldn't find Track with id=1):
+  app/controllers/tracks_controller.rb:16:in `show'
+
+
+  Rendered /Users/chris/.rvm/gems/ruby-2.0.0-p195/gems/actionpack-3.2.13/lib/action_dispatch/middleware/templates/rescues/_trace.erb (0.8ms)
+  Rendered /Users/chris/.rvm/gems/ruby-2.0.0-p195/gems/actionpack-3.2.13/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (0.7ms)
+  Rendered /Users/chris/.rvm/gems/ruby-2.0.0-p195/gems/actionpack-3.2.13/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (7.6ms)
+
+
+Started GET "/tracks/1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Processing by TracksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mTrack Load (0.2ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "1"]]
+  Rendered tracks/show.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 53ms (Views: 11.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/album_arts.css?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /album_arts.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /application.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /scaffolds.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tracks.css?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /tracks.css - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /jquery.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /jquery_ujs.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/album_arts.js?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /album_arts.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/tracks.js?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /tracks.js - 304 Not Modified (0ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2013-06-13 12:55:16 -0700
+Served asset /application.js - 304 Not Modified (0ms)
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks/1.json" for 127.0.0.1 at 2013-06-13 13:04:29 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"1"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "1"]]
+Completed 200 OK in 18ms (Views: 0.8ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:04:34 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:10:21 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:12:09 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:12:10 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.1ms)
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:12:28 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+Completed 200 OK in 30ms (Views: 1.4ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:15:39 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.1ms)
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:18:56 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.9ms)
+Completed 200 OK in 30ms (Views: 4.5ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:09 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.7ms)
+Completed 200 OK in 20ms (Views: 1.9ms | ActiveRecord: 0.5ms)
+Connecting to database specified by database.yml
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:13 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.9ms)
+Completed 200 OK in 30ms (Views: 4.3ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:14 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.2ms)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:14 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.2ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:36 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.5ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:19:41 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.4ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:20:48 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.7ms)
+Completed 200 OK in 19ms (Views: 1.9ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:20:49 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1[0m  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.3ms)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks/2.json" for 127.0.0.1 at 2013-06-13 13:20:49 -0700
+Processing by TracksController#show as JSON
+  Parameters: {"id"=>"2"}
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" WHERE "tracks"."id" = ? LIMIT 1  [["id", "2"]]
+  Rendered tracks/show.json.rabl (0.2ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:21:21 -0700
+Processing by TracksController#index as JSON
+  [1m[36mTrack Load (0.1ms)[0m  [1mSELECT "tracks".* FROM "tracks" [0m
+Completed 200 OK in 40ms (Views: 1.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:22:32 -0700
+Processing by TracksController#index as JSON
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" 
+  Rendered tracks/index.json.rabl (1.2ms)
+Completed 200 OK in 20ms (Views: 2.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:22:54 -0700
+Processing by TracksController#index as JSON
+  [1m[36mTrack Load (0.2ms)[0m  [1mSELECT "tracks".* FROM "tracks" [0m
+  Rendered tracks/index.json.rabl (0.7ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:24:09 -0700
+Processing by TracksController#index as JSON
+  [1m[35mTrack Load (0.3ms)[0m  SELECT "tracks".* FROM "tracks" 
+  Rendered tracks/index.json.rabl (3.1ms)
+Completed 200 OK in 6ms (Views: 5.0ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:24:20 -0700
+Processing by TracksController#index as JSON
+  [1m[36mTrack Load (0.2ms)[0m  [1mSELECT "tracks".* FROM "tracks" [0m
+  Rendered tracks/index.json.rabl (1.4ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/tracks.json" for 127.0.0.1 at 2013-06-13 13:25:39 -0700
+Processing by TracksController#index as JSON
+  [1m[35mTrack Load (0.1ms)[0m  SELECT "tracks".* FROM "tracks" 
+  Rendered tracks/index.json.rabl (1.9ms)
+Completed 200 OK in 40ms (Views: 3.0ms | ActiveRecord: 0.5ms)
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "tracks" [0m
+Connecting to database specified by database.yml
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM "tracks" [0m
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml

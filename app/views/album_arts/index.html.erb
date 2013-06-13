@@ -1,0 +1,27 @@
+<h1>Listing album_arts</h1>
+
+<table>
+  <tr>
+    <th>Data</th>
+    <th>Checksum</th>
+    <th>Size</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @album_arts.each do |album_art| %>
+  <tr>
+    <td><%= album_art.data %></td>
+    <td><%= album_art.checksum %></td>
+    <td><%= album_art.size %></td>
+    <td><%= link_to 'Show', album_art %></td>
+    <td><%= link_to 'Edit', edit_album_art_path(album_art) %></td>
+    <td><%= link_to 'Destroy', album_art, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Album art', new_album_art_path %>

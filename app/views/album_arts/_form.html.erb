@@ -1,0 +1,29 @@
+<%= form_for(@album_art) do |f| %>
+  <% if @album_art.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@album_art.errors.count, "error") %> prohibited this album_art from being saved:</h2>
+
+      <ul>
+      <% @album_art.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :data %><br />
+    <%= f.text_field :data %>
+  </div>
+  <div class="field">
+    <%= f.label :checksum %><br />
+    <%= f.text_field :checksum %>
+  </div>
+  <div class="field">
+    <%= f.label :size %><br />
+    <%= f.number_field :size %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
