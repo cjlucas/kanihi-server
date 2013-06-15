@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130615035345) do
+ActiveRecord::Schema.define(:version => 20130614114900) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -41,19 +41,6 @@ ActiveRecord::Schema.define(:version => 20130615035345) do
   create_table "images_tracks", :id => false, :force => true do |t|
     t.integer "track_id"
     t.integer "image_id"
-  end
-
-  create_table "job_records", :force => true do |t|
-    t.integer  "delayed_job_id"
-    t.integer  "priority"
-    t.string   "klass"
-    t.string   "ivars"
-    t.datetime "started_at"
-    t.datetime "finished_at"
-    t.datetime "failed_at"
-    t.string   "error"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
   end
 
   create_table "tracks", :force => true do |t|

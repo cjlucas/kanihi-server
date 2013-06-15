@@ -1,15 +1,8 @@
 MusicServer::Application.routes.draw do
-  resources :job_records
-
-
-  resources :jobs
-
-
   resources :album_arts
-
-
   resources :tracks
 
+  match 'info' => 'application#info'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

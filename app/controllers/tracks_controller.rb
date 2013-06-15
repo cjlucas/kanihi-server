@@ -15,10 +15,7 @@ class TracksController < ApplicationController
   # GET /tracks/1
   # GET /tracks/1.json
   def show
-    #@track = Track.find(params[:id])
-    @track = Track.new_with_file_path('/Volumes/HDD1/Music/OutKast/Speakerboxxx _ The Love Below (2003)/2-02 OutKast - Love Hater.mp3')
-    @track.save
-    BackgroundJob.new.delay.omg
+    @track = Track.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
       format.json # show.json.rabl
