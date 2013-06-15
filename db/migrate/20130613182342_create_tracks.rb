@@ -22,7 +22,6 @@ class CreateTracks < ActiveRecord::Migration
       t.string :mood
       t.boolean :compilation
       t.string :comment
-      t.integer :album_art_id
       t.integer :duration
       t.timestamp :mtime
       t.integer :size

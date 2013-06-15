@@ -1,4 +1,10 @@
 MusicServer::Application.routes.draw do
+  resources :job_records
+
+
+  resources :jobs
+
+
   resources :album_arts
 
 

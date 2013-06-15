@@ -28,9 +28,11 @@ gem 'nokogiri'
 # for json api
 gem 'rabl'
 
-gem 'easytag'
+gem 'easytag', '>= 0.4.1'
 
+gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

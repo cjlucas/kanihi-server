@@ -6,11 +6,6 @@ TYPE_END_ELEMENT    = Nokogiri::XML::Reader::TYPE_END_ELEMENT
 class ITunesLibrary
   attr_reader :count, :tracks
 
-  TRACK_KEYMAP = {
-    :total_time => :duration,
-    :location   => :uri,
-  }
-
   def initialize(f)
     @f = File.open(f)
     @r = Nokogiri::XML::Reader(@f)
@@ -54,7 +49,7 @@ class ITunesLibrary
   ###
   # @r position must be on opening key
   def read_key_value_pair
-    key = self.class.track_key(@r.read.value)
+    key = @r.read.value
     value_type = @r.read.read.name.downcase
 
     value = true if value_type.eql? 'true'
@@ -74,14 +69,4 @@ class ITunesLibrary
     end
   end
 
-  def self.normalize(str)
-    str.downcase!
-    str.gsub!(' ', '_')
-    str.to_sym
-  end
-
-  def self.track_key(key)
-    key = normalize(key)
-    TRACK_KEYMAP[key] || key
-  end
 end

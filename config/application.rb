@@ -3,6 +3,14 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 require 'rabl'
+
+require 'digest/sha1'
+
+$LOAD_PATH.unshift(File.expand_path('lib'))
+$LOAD_PATH.unshift(File.expand_path('app/jobs'))
+
+Dir['app/jobs/*rb'].each { |fpath| require File.basename(fpath) }
+
 Rabl.configure do |config|
 end
 
