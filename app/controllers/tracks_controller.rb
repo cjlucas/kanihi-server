@@ -1,5 +1,3 @@
-require 'assets/background_job'
-
 class TracksController < ApplicationController
   # GET /tracks
   # GET /tracks.json
@@ -16,10 +14,10 @@ class TracksController < ApplicationController
   # GET /tracks/1.json
   def show
     @track = Track.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json # show.json.rabl
-    end
+    #respond_to do |format|
+      #format.html # show.html.erb
+      #format.json # show.json.rabl
+    #end
   end
 
   ## GET /tracks/new

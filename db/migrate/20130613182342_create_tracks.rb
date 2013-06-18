@@ -28,6 +28,9 @@ class CreateTracks < ActiveRecord::Migration
       t.string :uri
 
       t.timestamps
+
     end
+      
+      add_index :tracks, :uri
   end
 end

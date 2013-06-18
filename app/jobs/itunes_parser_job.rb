@@ -3,14 +3,18 @@ require 'assets/parsers/itunes.rb'
 require 'base_job'
 
 class ITunesLibraryParserJob < BaseJob
-  def initialize(xml_file)
-    @xml = xml_file
+  def initialize(source)
+    @src = source
   end
 
   # start delayed_job hooks
   
   def perform
-    ITunesLibrary.parse(@xml) { |track_info| handle_track_info(track_info) }
+    ITunesLibrary.parse(@src.location) do |track_info| 
+      handle_track_info(track_info)
+    end
+
+    update_source
   end
 
   # end delayed_job hooks

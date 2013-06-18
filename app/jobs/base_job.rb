@@ -23,4 +23,9 @@ class BaseJob
   def max_attempts
     1
   end
+
+  def update_source
+    @src.last_scanned_at = Time.now
+    @src.save
+  end
 end

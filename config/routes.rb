@@ -1,8 +1,13 @@
 MusicServer::Application.routes.draw do
+  resources :sources
+
+
   resources :album_arts
   resources :tracks
 
   match 'info' => 'application#info'
+
+  root :to => 'application#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

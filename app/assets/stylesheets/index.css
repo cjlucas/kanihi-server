@@ -1,0 +1,30 @@
+div#main, div#sidebar
+{
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
+div#main
+{
+  background-color: pink;
+  padding: 10px;
+}
+
+div#sidebar
+{
+  background-color: orange;
+  padding: 10px;
+}
+
+table#sources td
+{
+  padding: 5px;
+}
+
+table#sources th
+{
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: left;
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614114900) do
+ActiveRecord::Schema.define(:version => 20130617212023) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -43,6 +43,14 @@ ActiveRecord::Schema.define(:version => 20130614114900) do
     t.integer "image_id"
   end
 
+  create_table "sources", :force => true do |t|
+    t.string   "location"
+    t.integer  "source_type"
+    t.datetime "last_scanned_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "tracks", :force => true do |t|
     t.string   "track_name"
     t.string   "subtitle"
@@ -72,5 +80,7 @@ ActiveRecord::Schema.define(:version => 20130614114900) do
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end
+
+  add_index "tracks", ["uri"], :name => "index_tracks_on_uri"
 
 end
