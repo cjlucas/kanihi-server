@@ -84,8 +84,9 @@ class Track < ActiveRecord::Base
 
     # images
     attribs[:images] = []
-    et.album_art.each do |image|
-      attribs[:images] << Image.image_for_data(image.data)
+    et.album_art.each do |et_img|
+      img = Image.image_for_data(et_img.data)
+      attribs[:images] << img unless attribs[:images].include?(img)
     end
 
     # size, mtime
