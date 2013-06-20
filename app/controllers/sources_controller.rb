@@ -13,7 +13,10 @@ class SourcesController < ApplicationController
 
   def destroy
     @source = Source.find(params[:id])
+    # when a source is destroyed, the relationship entries are deleted too
     @source.destroy
+
+    Delayed::Job.enqueue(PurgeOrphanedTracksJob.new)
     head :no_content
   end
 end
