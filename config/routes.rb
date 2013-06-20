@@ -1,8 +1,6 @@
 MusicServer::Application.routes.draw do
   resources :sources
-
-
-  resources :album_arts
+  resources :images
   resources :tracks
 
   match 'info' => 'application#info'
