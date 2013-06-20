@@ -27,6 +27,7 @@ class Track < ActiveRecord::Base
   attr_accessible :images
 
   has_and_belongs_to_many :images
+  has_and_belongs_to_many :sources
 
   validates :uri, \
     :uniqueness   => { :case_sensitive => false }, \
@@ -55,58 +56,60 @@ class Track < ActiveRecord::Base
 
   def file_modified?
     path = URI.unescape(URI(uri).path)
-    (mtime || 0) < File.stat(path).mtime
+    (mtime || Time.new(1960)) < File.stat(path).mtime
   end
 
   def self.attributes_for_file_path(fpath)
     attribs = {}
-    et = EasyTag::File.new(fpath)
-    
-    attribs[:uri] = uri_for_path(fpath).to_s
 
-    EASYTAG_ATTRIB_MAP.each do |key, value|
-      attribs[key] = et.send(value)
-    end
+    EasyTag::File.open(fpath) do |et|
+      attribs[:uri] = URI::File.new_with_path(fpath).to_s
 
-    # fallback: track_artist
-    attribs[:album_artist] = attrib_or_fallback(et.album_artist, et.artist)
+      EASYTAG_ATTRIB_MAP.each do |key, value|
+        attribs[key] = et.send(value)
+      end
 
-    # fallback to track_artist_sort_order
-    attribs[:album_artist_sort_order] = attrib_or_fallback(
-      et.album_artist_sort_order,
-      attribs[:track_artist_sort_order])
+      # fallback: track_artist
+      attribs[:album_artist] = attrib_or_fallback(et.album_artist, et.artist)
 
-    # track num/total
-    attribs[:track_num], attribs[:track_total] = et.track_num
+      # fallback to track_artist_sort_order
+      attribs[:album_artist_sort_order] = attrib_or_fallback(
+        et.album_artist_sort_order,
+        attribs[:track_artist_sort_order])
 
-    # disc num/total
-    attribs[:disc_num], attribs[:disc_total] = et.disc_num
+      # track num/total
+      attribs[:track_num], attribs[:track_total] = et.track_num
 
-    # images
-    attribs[:images] = []
-    et.album_art.each do |et_img|
-      img = Image.image_for_data(et_img.data)
-      attribs[:images] << img unless attribs[:images].include?(img)
-    end
+      # disc num/total
+      attribs[:disc_num], attribs[:disc_total] = et.disc_num
 
-    # size, mtime
-    fstat = File.stat(fpath)
-    attribs[:size] = fstat.size
-    attribs[:mtime] = fstat.mtime
-    
-    attribs.each do |attrib, value|
-      attribs[attrib] = attrib_or_nil(value)
+      # images
+      attribs[:images] = []
+      et.album_art.each do |et_img|
+        img = Image.image_for_data(et_img.data)
+        attribs[:images] << img unless attribs[:images].include?(img)
+      end
+
+      # size, mtime
+      fstat = File.stat(fpath)
+      attribs[:size] = fstat.size
+      attribs[:mtime] = fstat.mtime
+
+      attribs.each do |attrib, value|
+        attribs[attrib] = attrib_or_nil(value)
+      end
+
     end
 
     attribs
   end
 
   def self.track_for_file_path(fpath, force_update = false)
-    uri = uri_for_path(fpath)
+    uri = URI::File.new_with_path(fpath)
     t = Track.where(uri: uri.to_s).first_or_create
 
-    if force_update || (t == Track.last) || t.file_modified?
-      puts 'updating attributes' if Rails.env.test?
+    if force_update || (Time.now - t.created_at < 5) || t.file_modified?
+      puts "#{t.uri}: updating attributes" if $DEBUG
       t.update_attributes(attributes_for_file_path(fpath))
       t.save
     end
@@ -134,11 +137,5 @@ class Track < ActiveRecord::Base
     else
       attrib
     end
-  end
-
-  def self.uri_for_path(path)
-    uri_path = URI.escape(path)
-    uri_path = URI.escape(uri_path, '^[]\,\'\"')
-    URI("file://#{uri_path}")
   end
 end

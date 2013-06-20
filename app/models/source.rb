@@ -11,6 +11,8 @@ class Source < ActiveRecord::Base
 
   attr_protected :last_scanned_at, :location, :source_type
 
+  has_and_belongs_to_many :tracks
+
   def exists?
     case source_type
     when Type::DIRECTORY
