@@ -15,7 +15,7 @@ class ITunesLibraryParserJob < BaseJob
     uris = get_uris
     # remove tracks from database that are no longer in iTunes library
     @src.tracks.all.each do |track|
-      next if uris.include?(URI::File.new_with_uri_string(track.uri))
+      next if uris.include?(URI::File.new_with_path(track.location))
       logger.info("Deleting #{track.uri} from database")
       track.destroy
     end
@@ -52,7 +52,7 @@ class ITunesLibraryParserJob < BaseJob
 
   def handle_uri(uri)
     fpath = self.class.uri_to_path(uri)
-    if uri.exists?
+    if File.exists?(fpath)
       t = Track.track_for_file_path(fpath)
       unless t.sources.include?(@src)
         t.sources << @src
