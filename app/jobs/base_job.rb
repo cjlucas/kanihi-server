@@ -1,4 +1,5 @@
 class BaseJob
+  class JobError < Exception; end
   # start delayed_job hooks
   
   def enqueue(job)

@@ -6,12 +6,15 @@ require 'base_job'
 class ITunesLibraryParserJob < BaseJob
   extend MusicServer::Utils::Path
   def initialize(source)
-    @src = source
+    @source_id = source.id
   end
 
   # start delayed_job hooks
   
   def perform
+    @src = Source.where(id: @source_id).first
+    raise JobError.new("Source is no longer in database.") if @src.nil?
+
     uris = get_uris
     # remove tracks from database that are no longer in iTunes library
     @src.tracks.all.each do |track|
