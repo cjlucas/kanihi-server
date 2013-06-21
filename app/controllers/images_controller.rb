@@ -1,9 +1,3 @@
-class EasyTag::File
-  def self.new_with_uri(uri)
-    self.new(URI.unescape(uri.path))
-  end
-end
-
 class ImagesController < ApplicationController
   def show
     @image = Image.find(params[:id])
@@ -16,10 +10,9 @@ class ImagesController < ApplicationController
   # returns: EasyTag::Image or nil
   def find_easytag_image
     @image.tracks.each do |track|
-      uri = URI(track.uri)
-      next unless uri.exists?
+      next unless File.exists?(track.location)
 
-      et = EasyTag::File.new_with_uri(uri)
+      et = EasyTag::File.new(track.location)
       et.album_art.each do |album_art|
         temp_img = Image.image_for_data(album_art.data)
         if temp_img.checksum == @image.checksum \

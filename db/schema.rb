@@ -81,11 +81,11 @@ ActiveRecord::Schema.define(:version => 20130620000000) do
     t.integer  "duration"
     t.datetime "mtime"
     t.integer  "size"
-    t.string   "uri"
+    t.string   "location"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end
 
-  add_index "tracks", ["uri"], :name => "index_tracks_on_uri"
+  add_index "tracks", ["location"], :name => "index_tracks_on_location"
 
 end

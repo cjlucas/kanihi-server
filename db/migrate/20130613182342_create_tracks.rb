@@ -25,7 +25,7 @@ class CreateTracks < ActiveRecord::Migration
       t.integer :duration
       t.timestamp :mtime
       t.integer :size
-      t.string :uri
+      t.string :location
 
       t.timestamps
 

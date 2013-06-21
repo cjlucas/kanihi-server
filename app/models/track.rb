@@ -1,4 +1,7 @@
+require 'utils/path'
+
 class Track < ActiveRecord::Base
+  extend MusicServer::Utils::Path
   attr_accessible :album_artist
   attr_accessible :album_artist_sort_order
   attr_accessible :album_name
@@ -23,13 +26,13 @@ class Track < ActiveRecord::Base
   attr_accessible :track_name
   attr_accessible :track_num
   attr_accessible :track_total
-  attr_accessible :uri
+  attr_accessible :location
   attr_accessible :images
 
   has_and_belongs_to_many :images
   has_and_belongs_to_many :sources
 
-  validates :uri, \
+  validates :location, \
     :uniqueness   => { :case_sensitive => false }, \
     :allow_nil    => false, \
     :allow_blank  => false
@@ -55,15 +58,18 @@ class Track < ActiveRecord::Base
   }   
 
   def file_modified?
-    path = URI.unescape(URI(uri).path)
-    (mtime || Time.new(1960)) < File.stat(path).mtime
+    (mtime || Time.new(1960)) < File.stat(location).mtime
+  end
+
+  def location=(location)
+    write_attribute(:location, self.class.sanitize_path(location))
   end
 
   def self.attributes_for_file_path(fpath)
     attribs = {}
 
     EasyTag::File.open(fpath) do |et|
-      attribs[:uri] = URI::File.new_with_path(fpath).to_s
+      attribs[:location] = File.absolute_path(fpath)
 
       EASYTAG_ATTRIB_MAP.each do |key, value|
         attribs[key] = et.send(value)
@@ -105,11 +111,11 @@ class Track < ActiveRecord::Base
   end
 
   def self.track_for_file_path(fpath, force_update = false)
-    uri = URI::File.new_with_path(fpath)
-    t = Track.where(uri: uri.to_s).first_or_create
+    fpath = File.absolute_path(fpath)
+    t = Track.where(location: fpath).first_or_create
 
     if force_update || (Time.now - t.created_at < 5) || t.file_modified?
-      puts "#{t.uri}: updating attributes" if $DEBUG
+      puts "#{t.location}: updating attributes" if $DEBUG
       t.update_attributes(attributes_for_file_path(fpath))
       t.save
     end

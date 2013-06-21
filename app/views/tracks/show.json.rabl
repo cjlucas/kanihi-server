@@ -1,2 +1,2 @@
 object @track
-attributes :uri, :track_name
+attributes :location, :track_name

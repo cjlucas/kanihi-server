@@ -24,38 +24,14 @@ module URI
       @fragment = nil
       @parser = parser == DEFAULT_PARSER ? nil : parser
 
-      if arg_check
-        self.scheme = scheme
-        #self.userinfo = userinfo
-        #self.host = host
-        #self.port = port
-        self.path = path
-        #self.query = query
-        #self.opaque = opaque
-        #self.registry = registry
-        #self.fragment = fragment
-      else
-        self.set_scheme(scheme)
-        #self.set_userinfo(userinfo)
-        #self.set_host(host)
-        #self.set_port(port)
-        self.set_path(path)
-        #self.set_query(query)
-        #self.set_opaque(opaque)
-        #self.set_registry(registry)
-        #self.set_fragment(fragment)
-      end
+      
+      self.scheme = scheme || 'file'
+      self.host = host || 'localhost'
+      self.path = path
     end
 
     def self.new_with_path(path)
-      self.new('file', nil, nil, nil, nil, escape_path(path), nil, nil, nil)
-    end
-
-    # ensure we get a new uri suitible for comparison
-    def self.new_with_uri_string(uri_s)
-      uri = URI(uri_s)
-      path = URI.unescape(uri.path)
-      self.new_with_path(path)
+      self.new('file', nil, nil, nil, nil, path, nil, nil, nil)
     end
 
     def ==(other)
@@ -71,15 +47,25 @@ module URI
       path[-1].eql?(::File::SEPARATOR) ? path[0..-2] : path
     end
  
-    def set_scheme(v)
-      @scheme = v ? v.downcase : v
+    def scheme=(scheme)
+      @scheme = scheme ? scheme.downcase : scheme
     end
-    protected :set_scheme
+    protected :scheme=
     
-    def set_path(v)
-      @path = v
+    def path=(path)
+      @path = self.class.escape_path(URI.unescape(path))
     end
-    protected :set_path
+    protected :path=
+
+    # filesystem path
+    def fpath
+      URI.unescape(@path)
+    end
+
+    def host=(host)
+      @host = host
+    end
+    protected :host=
 
     def exists?
       path = URI.unescape(@path)
@@ -96,6 +82,7 @@ module URI
       s << @scheme
       s << ':'
       s << '//'
+      s << @host
       s << @path
     end
 

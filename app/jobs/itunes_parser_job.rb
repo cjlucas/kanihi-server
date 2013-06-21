@@ -1,8 +1,10 @@
 require 'assets/parsers/itunes.rb'
+require 'utils/path'
 
 require 'base_job'
 
 class ITunesLibraryParserJob < BaseJob
+  extend MusicServer::Utils::Path
   def initialize(source)
     @src = source
   end
@@ -32,9 +34,7 @@ class ITunesLibraryParserJob < BaseJob
       track_info_normalized = normalize_track_info(track_info)
       
       if track_info_normalized.has_key?(:location)
-        itunes_uri = URI(track_info_normalized[:location])
-        fpath = URI.unescape(itunes_uri.path)
-        uris << URI::File.new_with_path(fpath)
+        uris << URI(track_info_normalized[:location])
       end
     end
 
@@ -51,8 +51,9 @@ class ITunesLibraryParserJob < BaseJob
   end
 
   def handle_uri(uri)
+    fpath = self.class.uri_to_path(uri)
     if uri.exists?
-      t = Track.track_for_file_path(URI.unescape(uri.path))
+      t = Track.track_for_file_path(fpath)
       unless t.sources.include?(@src)
         t.sources << @src
         t.save
@@ -60,13 +61,13 @@ class ITunesLibraryParserJob < BaseJob
       
       now = Time.now
       if now - t.created_at < 5
-        logger.info("Added #{uri.path}")
+        logger.info("Added #{fpath}")
       elsif now - t.updated_at < 5
-        logger.info("Updated #{uri.path}")
+        logger.info("Updated #{fpath}")
       end
 
     else
-      logger.info("#{uri.path} doesn't exist. Skipping.")
+      logger.info("#{fpath} doesn't exist. Skipping.")
     end
   end
 
