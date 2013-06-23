@@ -9,7 +9,7 @@ class Source < ActiveRecord::Base
 
   class SourceNotFoundError < Exception; end
 
-  attr_protected :last_scanned_at, :location, :source_type
+  attr_protected :last_scanned_at, :location, :source_type, :scan_interval
 
   has_and_belongs_to_many :tracks
 

@@ -10,4 +10,8 @@ class PurgeOrphanedTracksJob < BaseJob
       end
     end
   end
+
+  def priority
+    Priority::LOW
+  end
 end

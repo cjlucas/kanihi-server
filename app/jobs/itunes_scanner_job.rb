@@ -3,10 +3,14 @@ require 'utils/path'
 
 require 'base_job'
 
-class ITunesLibraryParserJob < BaseJob
+class ITunesLibraryScannerJob < BaseJob
   extend MusicServer::Utils::Path
   def initialize(source)
     @source_id = source.id
+  end
+
+  def priority
+    Priority::HIGH
   end
 
   # start delayed_job hooks

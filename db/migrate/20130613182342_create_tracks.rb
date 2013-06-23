@@ -31,6 +31,6 @@ class CreateTracks < ActiveRecord::Migration
 
     end
       
-      add_index :tracks, :uri
+      add_index :tracks, :location
   end
 end

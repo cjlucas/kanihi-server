@@ -1,4 +1,12 @@
 class BaseJob
+  class Priority
+    HIGHEST = 0
+    HIGH    = 10
+    NORMAL  = 20
+    LOW     = 30
+    LOWEST  = 40
+  end
+
   class JobError < Exception; end
   # start delayed_job hooks
   
@@ -7,6 +15,7 @@ class BaseJob
 
   def before(job)
     @logger = get_logger(job.id)
+    puts "starting #{job.id}"
     log_header(job)
   end
 
@@ -31,7 +40,15 @@ class BaseJob
   end
 
   # end delayed_job hooks
- 
+  
+  def priority
+    Priority::NORMAL
+  end
+
+  def add
+    Delayed::Job.enqueue(self, priority: priority)
+  end
+  
   def log_header(job)
     logger.info('starting job:')
     logger.info(job.handler)

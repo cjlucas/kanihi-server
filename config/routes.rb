@@ -1,5 +1,6 @@
 MusicServer::Application.routes.draw do
   resources :sources
+  match 'sources/:id/scan' => 'sources#scan'
   resources :images
   resources :tracks
 

@@ -19,4 +19,11 @@ class SourcesController < ApplicationController
     Delayed::Job.enqueue(PurgeOrphanedTracksJob.new)
     head :no_content
   end
+
+  def scan
+    @source = Source.find(params[:id])
+    
+    ScannerJob.job_for_source(@source).add
+    head :no_content
+  end
 end
