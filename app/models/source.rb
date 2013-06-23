@@ -14,12 +14,7 @@ class Source < ActiveRecord::Base
   has_and_belongs_to_many :tracks
 
   def exists?
-    case source_type
-    when Type::DIRECTORY
-      Dir.exists?(self.location)
-    when Type::ITUNES_LIBRARY_XML_FILE
-      File.exists?(self.location)
-    end
+    File.exists?(self.location)
   end
 
   def self.new_with_source_type(location, source_type)
