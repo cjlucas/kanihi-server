@@ -5,6 +5,7 @@ MusicServer::Application.routes.draw do
   resources :tracks
 
   match 'info' => 'application#info'
+  match 'shutdown' => 'application#shutdown'
 
   root :to => 'application#index'
 

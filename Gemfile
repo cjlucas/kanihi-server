@@ -28,11 +28,18 @@ gem 'nokogiri'
 # for json api
 gem 'rabl'
 
-gem 'easytag', '>= 0.4.1'
+gem 'easytag', '>= 0.4.2'
+gem 'taglib-ruby', github: 'robinst/taglib-ruby', ref: 'bb6453e2e3404cbc8d1e3056880922797167a218'
 
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+
+#gem 'app-config', github: 'cjlucas/app-config'
+gem 'app-config', path: '/Users/chris/repos/app-config'
+
 gem 'daemons'
+
+gem 'cjutils', path: '/Users/chris/repos/ruby-cjutils'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

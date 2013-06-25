@@ -1,7 +1,7 @@
-require 'utils/path'
+require 'cjutils/path'
 
 class Track < ActiveRecord::Base
-  extend MusicServer::Utils::Path
+  extend CJUtils::Path
   attr_accessible :album_artist
   attr_accessible :album_artist_sort_order
   attr_accessible :album_name

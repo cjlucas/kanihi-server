@@ -1,10 +1,10 @@
 require 'assets/parsers/itunes.rb'
-require 'utils/path'
+require 'cjutils/path'
 
 require 'base_job'
 
 class ITunesLibraryScannerJob < BaseJob
-  extend MusicServer::Utils::Path
+  extend CJUtils::Path
   def initialize(source)
     @source_id = source.id
   end
@@ -16,6 +16,9 @@ class ITunesLibraryScannerJob < BaseJob
   # start delayed_job hooks
   
   def perform
+    halt = false
+    Signal.trap('TERM') { halt = true }
+
     @src = Source.where(id: @source_id).first
     raise JobError.new("Source is no longer in database.") if @src.nil?
 
@@ -25,10 +28,14 @@ class ITunesLibraryScannerJob < BaseJob
       next if uris.include?(URI::File.new_with_path(track.location))
       logger.info("Deleting #{track.uri} from database")
       track.destroy
+      exit if halt
     end
 
     # add/update tracks
-    uris.each { |uri| handle_uri(uri) }
+    uris.each do |uri|
+      handle_uri(uri)
+      exit if halt
+    end
 
     update_source
   end
