@@ -6,9 +6,8 @@ require 'rabl'
 
 require 'digest/sha1'
 
-$LOAD_PATH.unshift(File.expand_path('lib'))
-$LOAD_PATH.unshift(File.expand_path('app/jobs'))
-
+$LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
+$LOAD_PATH.unshift(File.expand_path('../../app/jobs', __FILE__))
 Dir['app/jobs/*rb'].each { |fpath| require File.basename(fpath) }
 require 'uri/file'
 
@@ -24,6 +23,7 @@ end
 
 module MusicServer
   class Application < Rails::Application
+    VERSION = '0.0.1'
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -71,5 +71,26 @@ module MusicServer
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.after_initialize do
+      AppConfig.configure(:model => Setting)
+      AppConfig.load if Setting.table_exists?
+
+      default_settings = {
+        :debug        => false,
+        :host         => '0.0.0.0',
+        :port         => 8080,
+        :auth_user    => nil,
+        :auth_pass    => nil,
+      }
+
+      default_settings.each do |setting, value|
+        AppConfig[setting] = value unless AppConfig.exists?(setting)
+      end
+
+      AppConfig.save
+    end
+    
+    puts 'OMGHERE'
   end
 end
