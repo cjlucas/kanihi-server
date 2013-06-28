@@ -1,14 +1,49 @@
-div#main, div#sidebar
+body
 {
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
+  padding-top: 0px;
+}
+
+.navbar-inner
+{
+  background-color: #796EA2;
+  border-radius: 0;
+}
+div#sidebar
+{
+}
+
+.brand a
+{
+  float: left;
 }
 
 div#main
 {
-  background-color: pink;
   padding: 10px;
+}
+
+div#main h2
+{
+  background-color: pink;
+  margin: 0 0 0 0;
+}
+
+div#main table
+{
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* Header of each table */
+div#main tr:first-child
+{
+  background-color: black;
+  color: white;
+}
+
+div#main tr:nth-child(2n+2)
+{
+  background-color: #ccc;
 }
 
 div#sidebar
@@ -17,14 +52,33 @@ div#sidebar
   padding: 10px;
 }
 
-table#sources td
+table#sources
 {
-  padding: 5px;
+  border: 1px black;
 }
 
-table#sources th
+table#sources th, table#sources td,
+table#jobs th, table#jobs td,
+table#daemons th, table#daemons td
 {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
   text-align: left;
+  height: 25px;
 }
+
+.stretch
+{
+  width: 99%;
+}
+
+.nowrap
+{
+  white-space: nowrap;
+}
+
+#flash
+{
+  display: none;
+}
+
