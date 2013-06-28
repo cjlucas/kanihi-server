@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'daemons'
+
+RAILS_ROOT = File.expand_path('../../', __FILE__)
+
+Dir.mkdir(PID_DIR) unless File.exists?(PID_DIR)
+
+options = {
+  dir_mode: :script,
+  dir:      PID_DIR,
+  log_output: true,
+  monitor: true,
+}
+
+Daemons.run_proc('job_scheduler', options) do
+  require '/Users/chris/repos/music_server/config/environment'
+  runner = JobScheduler.new
+  runner.run
+end

@@ -5,6 +5,7 @@ child(:jobs => :jobs) do
   attribute :name
   attribute :args
   attribute :priority
+  attribute :running
   attribute :run_at
 end
 
@@ -13,4 +14,10 @@ child(:sources => :sources) do
   attribute :location
   attribute :last_scanned_at
   attribute :source_type
+end
+
+child(:daemons => :daemons) do
+  attribute :name
+  attribute :pid
+  attribute :dead
 end

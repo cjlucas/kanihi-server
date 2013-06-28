@@ -8,26 +8,26 @@
         </div>
       </div>
       <div class='row-fluid'>
-
         <div class='span8' id='main'>
+          <div class='alert' id='flash'>
+          </div>
           <h2>Sources</h2>
           <table id='sources'>
-            <tr>
-              <th>Name</th>
-              <th>Last Updated</th>
-            </tr>
-            <% @sources.each do |source| %>
-              <tr>
-                <td><%= source.location %></td>
-                <td><%= source.last_scanned_at  || 'never' %></td>
-              </tr>
-            <% end %>
+            <!-- filled by updateSources -->
           </table>
 
           <h2>Jobs</h2>
           <table id='jobs'>
             <!-- filled by updateJobs -->
           </table>
+
+          <% AppConfig.reload %>
+          <% if AppConfig[:debug] %>
+            <h2>Daemons</h2>
+            <table id='daemons'>
+              <!-- filled by updateDaemons -->
+            </table>
+          <% end %>
         </div>
 
         <div class='span4' id='sidebar'>

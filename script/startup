@@ -1,0 +1,5 @@
+#!/bin/sh
+
+script/server restart
+script/job_scheduler restart
+script/delayed_job

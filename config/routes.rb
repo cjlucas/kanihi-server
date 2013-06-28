@@ -7,6 +7,10 @@ MusicServer::Application.routes.draw do
   match 'info' => 'application#info'
   match 'shutdown' => 'application#shutdown'
 
+  match 'daemons/stop' => 'daemons#stop'
+  match 'daemons/start' => 'daemons#start'
+  match 'daemons/restart' => 'daemons#restart'
+
   root :to => 'application#index'
 
   # The priority is based upon order of creation:

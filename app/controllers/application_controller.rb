@@ -27,12 +27,15 @@ class ApplicationController < ActionController::Base
 
   class ServerInfo < Struct.new(:jobs,
                                 :sources,
+                                :daemons,
                                 :track_count,
                                 :image_count,
                                 :server_time,
                                 :server_version)
   end
   def info
+    AppConfig.reload
+    
     @info = ServerInfo.new
     @info.server_version = MusicServer::Application::VERSION
     @info.track_count = Track.count
@@ -42,6 +45,7 @@ class ApplicationController < ActionController::Base
                   'ORDER BY locked_at DESC, priority ASC'].join(' ')
     @info.jobs = process_jobs(Delayed::Job.find_by_sql(jobs_query))
     @info.sources = Source.all
+    @info.daemons = AppConfig[:debug] ? get_daemons : []
     #@info.jobs = []
   end
 
@@ -50,7 +54,7 @@ class ApplicationController < ActionController::Base
                          :args,
                          :priority,
                          :running,
-                         :run_at);
+                         :run_at)
   end
 
   def process_jobs(jobs)
@@ -76,5 +80,33 @@ class ApplicationController < ActionController::Base
     end
 
     new_jobs
+  end
+
+  class Daemon < Struct.new(:pid,
+                            :name,
+                            :dead)
+  end
+
+  def get_daemons
+    daemons = []
+    pid_names = [
+      'server',
+      'delayed_job',
+      'job_scheduler',
+      'job_scheduler_monitor',
+    ]
+
+    pid_names.each do |pid_name|
+      pid_file = File.join(Rails.root, 'tmp/pids', "#{pid_name}.pid")
+      
+      d = Daemon.new
+      d.name = pid_name
+      d.pid = CJUtils::Process.pid_for_pid_file(pid_file)
+      d.dead = !CJUtils::Process.exists?(d.pid)
+      
+      daemons << d
+    end
+
+    daemons
   end
 end
