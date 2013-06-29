@@ -40,9 +40,9 @@ function updateSources(sources)
     html += '<tr>';
     html += '<td class="stretch">' + source.location + '</td>';
     html += '<td class="nowrap">' + last_scanned_at + '</td>';
-    html += '<td class="nowrap"><a href="#" id="scan_source" ' +
+    html += '<td class="nowrap"><a href="#" data-src-action="scan" ' +
             'data-sourceid="' + source.id + '">Update</a></td>';
-    html += '<td class="nowrap"><a href="#" id="delete_source" ' +
+    html += '<td class="nowrap"><a href="#" data-src-action="delete" ' +
             'data-sourceid="' + source.id + '">Delete</a></td>';
     html += '</tr>';
   }
@@ -54,8 +54,8 @@ function updateSources(sources)
   $("table#sources tr:gt(0)").remove();
   $("table#sources").append(html);
   
-  $("#delete_source").click(handleDeleteSource);
-  $("#scan_source").click(handleScanSource);
+  $("a[data-src-action=delete]").click(handleDeleteSource);
+  $("a[data-src-action=scan]").click(handleScanSource);
 }
 
 function updateDaemons(daemons)
@@ -198,8 +198,6 @@ function setFlashMessage(msg)
   $("#flash button").click(function() { $("#flash").hide(); });
 }
 
-/*
- *setInterval(function() {
- *  getServerInfo();
- *}, 2000);
- */
+setInterval(function() {
+  getServerInfo();
+}, 2000);

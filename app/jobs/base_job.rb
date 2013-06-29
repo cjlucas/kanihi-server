@@ -72,11 +72,6 @@ class BaseJob
     log_dir = Rails.root.join('log')
     Dir.mkdir(log_dir) unless Dir.exists?(log_dir)
 
-    log_dir.join("job-#{job_id}.log")
-  end
-
-  def update_source
-    @src.last_scanned_at = Time.now
-    @src.save
+    log_dir.join("jobs.log")
   end
 end
