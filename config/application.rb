@@ -76,8 +76,6 @@ module MusicServer
 
     config.after_initialize do
       AppConfig.configure(:model => Setting)
-      AppConfig.load if Setting.table_exists?
-
       default_settings = {
         :debug        => false,
         :host         => '0.0.0.0',
@@ -85,14 +83,13 @@ module MusicServer
         :auth_user    => nil,
         :auth_pass    => nil,
       }
+      if Setting.table_exists?
+        default_settings.each do |setting, value|
+          AppConfig[setting] = value unless AppConfig.exists?(setting)
+        end
 
-      default_settings.each do |setting, value|
-        AppConfig[setting] = value unless AppConfig.exists?(setting)
+        AppConfig.save
       end
-
-      AppConfig.save
     end
-    
-    puts 'OMGHERE'
   end
 end
