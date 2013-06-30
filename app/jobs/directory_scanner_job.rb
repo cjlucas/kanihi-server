@@ -2,9 +2,6 @@ require 'scanner_job'
 
 class DirectoryScannerJob < ScannerJob
   SUPPORTED_FILE_TYPES = ['mp3', 'm4a']
-  def initialize(source)
-    @source_id = source.id
-  end
 
   def supported_audio_file?(file)
     ext = File.extname(file).downcase.sub('.','')
