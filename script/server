@@ -20,7 +20,7 @@ Daemons.run_proc('rails_server', options) do
 
   Dir.chdir(RAILS_ROOT)
   # ignore whatever args are passed (causes issues with Server::Options)
-  ARGV = []
+  ARGV.clear
 
   # Rails::Server doesn't shutdown cleanly with TERM
   Signal.trap('TERM') { ::Process.kill('INT', Process.pid)}
