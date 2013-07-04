@@ -9,7 +9,7 @@ class DirectoryScannerJob < ScannerJob
   end
 
   def handle_file(filename)
-    return unless File.readable?(filename)
+    return unless File.readable?(filename) && supported_audio_file?(filename)
     fpath = File.expand_path(filename)
     
     t = Track.track_for_file_path(fpath)
