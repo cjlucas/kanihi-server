@@ -4,6 +4,11 @@ MusicServer::Application.routes.draw do
   resources :images
   resources :tracks
 
+  match 'settings/update' => 'settings#update'
+  match 'settings' => 'settings#index'
+
+  
+  match 'restart' => 'application#restart'
   match 'info' => 'application#info'
   match 'shutdown' => 'application#shutdown'
 

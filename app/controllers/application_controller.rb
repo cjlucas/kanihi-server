@@ -25,6 +25,13 @@ class ApplicationController < ActionController::Base
     render text: "MusicServer is shutting down (#{@shutdown_pid})"
   end
 
+  def restart
+
+    AppConfig.reload
+    @port = AppConfig[:port]
+    render 'redirect'
+  end
+
   class ServerInfo < Struct.new(:jobs,
                                 :sources,
                                 :daemons,
@@ -46,7 +53,6 @@ class ApplicationController < ActionController::Base
     @info.jobs = process_jobs(Delayed::Job.find_by_sql(jobs_query))
     @info.sources = Source.all
     @info.daemons = AppConfig[:debug] ? get_daemons : []
-    #@info.jobs = []
   end
 
   class Job < Struct.new(:id,
@@ -54,7 +60,7 @@ class ApplicationController < ActionController::Base
                          :args,
                          :priority,
                          :running,
-                         :run_at)
+                         :run_at);
   end
 
   def process_jobs(jobs)

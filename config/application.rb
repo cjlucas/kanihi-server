@@ -84,8 +84,9 @@ module MusicServer
         :auth_pass    => nil,
       }
       if Setting.table_exists?
+        AppConfig.reload
         default_settings.each do |setting, value|
-          AppConfig[setting] = value unless AppConfig.exists?(setting)
+          AppConfig[setting] = value unless AppConfig.exist?(setting)
         end
 
         AppConfig.save
