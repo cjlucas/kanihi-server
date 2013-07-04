@@ -9,7 +9,7 @@ class ITunesLibraryScannerJob < ScannerJob
   def perform
     halt = false
     Signal.trap('TERM') { halt = true }
-
+    
     raise JobError, 'Source is no longer in database' if source.nil?
 
     uris = get_uris
@@ -26,8 +26,6 @@ class ITunesLibraryScannerJob < ScannerJob
       handle_uri(uri)
       exit if halt
     end
-
-    update_source
   end
 
   def get_uris

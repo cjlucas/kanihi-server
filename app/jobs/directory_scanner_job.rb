@@ -31,8 +31,6 @@ class DirectoryScannerJob < ScannerJob
       handle_file(filename) if File.file?(filename)
       exit if halt
     end
-
-    update_source
   end
 
 end

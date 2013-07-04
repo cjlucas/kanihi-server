@@ -22,8 +22,12 @@ class ScannerJob < BaseJob
     @source ||= Source.where(id: @source_id).first
   end
 
-  def update_source
+  def success(job)
     source.last_scanned_at = Time.now
+  end
+
+  def after(job)
+    source.scanning = false
     source.save
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130623000000) do
+ActiveRecord::Schema.define(:version => 20130704140000) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130623000000) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.integer  "scan_interval",   :default => 86400
+    t.boolean  "scanning",        :default => false
   end
 
   create_table "sources_tracks", :id => false, :force => true do |t|
