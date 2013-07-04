@@ -15,11 +15,22 @@ class JobScheduler
     end
   end
 
+  def run_maintenance_jobs
+    if Time.now - @maintenance_last_run > 1.day
+      PurgeOrphanedTracksJob.new.add
+      PurgeOrphanedImagesJob.new.add
+      @maintenance_last_run = Time.now
+    end
+  end
+
   def run
     halt = false
     Signal.trap('TERM') { halt = true }
+
+    @maintenance_last_run = Time.new(1960)
     loop do
       check_sources
+      run_maintenance_jobs
       halt ? exit : sleep(SLEEP_TIME)
     end
   end
