@@ -3,6 +3,7 @@
 require 'daemons'
 
 RAILS_ROOT = File.expand_path('../../', __FILE__)
+PID_DIR = File.expand_path('tmp/pids', RAILS_ROOT)
 
 Dir.mkdir(PID_DIR) unless File.exists?(PID_DIR)
 
