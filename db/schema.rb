@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704140000) do
+ActiveRecord::Schema.define(:version => 20130704180000) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -96,8 +96,10 @@ ActiveRecord::Schema.define(:version => 20130704140000) do
     t.string   "location"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
+    t.string   "uuid"
   end
 
   add_index "tracks", ["location"], :name => "index_tracks_on_location"
+  add_index "tracks", ["uuid"], :name => "tracks_uuid_idx", :unique => true
 
 end

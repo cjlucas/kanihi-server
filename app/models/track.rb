@@ -32,7 +32,14 @@ class Track < ActiveRecord::Base
   has_and_belongs_to_many :images
   has_and_belongs_to_many :sources
 
+  after_initialize :after_init
+
   validates :location, \
+    :uniqueness   => { :case_sensitive => false }, \
+    :allow_nil    => false, \
+    :allow_blank  => false
+
+  validates :uuid, \
     :uniqueness   => { :case_sensitive => false }, \
     :allow_nil    => false, \
     :allow_blank  => false
@@ -57,12 +64,20 @@ class Track < ActiveRecord::Base
     :comment                  => :comment
   }   
 
+  def after_init
+    self.uuid = self.class.generate_uuid
+  end
+
   def file_modified?
     (mtime || Time.new(1960)) < File.stat(location).mtime
   end
 
   def location=(location)
     write_attribute(:location, self.class.sanitize_path(location))
+  end
+
+  def self.generate_uuid
+    UUIDTools::UUID.random_create.to_s.downcase
   end
 
   def self.attributes_for_file_path(fpath)

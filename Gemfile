@@ -41,6 +41,8 @@ gem 'daemons'
 
 gem 'cjutils', path: '/Users/chris/repos/ruby-cjutils'
 
+gem 'uuidtools'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
