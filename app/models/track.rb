@@ -32,17 +32,10 @@ class Track < ActiveRecord::Base
   has_and_belongs_to_many :images
   has_and_belongs_to_many :sources
 
-  after_initialize :after_init
+  before_validation :ensure_uuid_exists
 
-  validates :location, \
-    :uniqueness   => { :case_sensitive => false }, \
-    :allow_nil    => false, \
-    :allow_blank  => false
-
-  validates :uuid, \
-    :uniqueness   => { :case_sensitive => false }, \
-    :allow_nil    => false, \
-    :allow_blank  => false
+  validates_presence_of :location, :uuid
+  validates_uniqueness_of :location, :uuid
 
   # simple 
   EASYTAG_ATTRIB_MAP = {
@@ -64,8 +57,8 @@ class Track < ActiveRecord::Base
     :comment                  => :comment
   }   
 
-  def after_init
-    self.uuid = self.class.generate_uuid
+  def ensure_uuid_exists
+    self.uuid = self.class.generate_uuid if self.uuid.nil?
   end
 
   def file_modified?
