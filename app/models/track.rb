@@ -28,13 +28,14 @@ class Track < ActiveRecord::Base
   attr_accessible :track_total
   attr_accessible :location
   attr_accessible :images
+  attr_accessible :filesystem_id
 
   has_and_belongs_to_many :images
   has_and_belongs_to_many :sources
 
   before_validation :ensure_uuid_exists
 
-  validates_presence_of :location, :uuid
+  validates_presence_of :location, :uuid, :filesystem_id
   validates_uniqueness_of :location, :uuid
 
   # simple 
@@ -73,6 +74,10 @@ class Track < ActiveRecord::Base
     UUIDTools::UUID.random_create.to_s.downcase
   end
 
+  def self.generate_filesystem_id(stat)
+    stat.dev.to_i * stat.ino.to_i
+  end
+
   def self.attributes_for_file_path(fpath)
     attribs = {}
 
@@ -108,6 +113,7 @@ class Track < ActiveRecord::Base
       fstat = File.stat(fpath)
       attribs[:size] = fstat.size
       attribs[:mtime] = fstat.mtime
+      attribs[:filesystem_id] = generate_filesystem_id(fstat)
 
       attribs.each do |attrib, value|
         attribs[attrib] = attrib_or_nil(value)
@@ -124,18 +130,23 @@ class Track < ActiveRecord::Base
 
     # check to see if track moved
     if t.nil?
-      puts 'here1'
+      puts 'lookup by filesystem_id' if $DEBUG
+      fsid = generate_filesystem_id(File.stat(fpath))
+      t = Track.where(filesystem_id: fsid).first
+      force_update = true unless t.nil?
+    end
+    
+    if t.nil?
+      puts 'lookup by attributes' if $DEBUG
       attribs = attributes_for_file_path(fpath)
       t = Track.track_for_attribs(attribs).first 
-      # update the location
       force_update = true unless t.nil?
     end
 
     # if not, create a new track
     t = Track.new(attribs) and t.save if t.nil?
 
-    ap t
-    # TODO: remember why that time check is there
+    # TODO: figure out why that time check is there
     if force_update || (Time.now - t.created_at < 5) || t.file_modified?
       puts "#{t.location}: updating attributes" if $DEBUG
       t.update_attributes(attributes_for_file_path(fpath))
