@@ -120,8 +120,22 @@ class Track < ActiveRecord::Base
 
   def self.track_for_file_path(fpath, force_update = false)
     fpath = File.absolute_path(fpath)
-    t = Track.where(location: fpath).first_or_create
+    t = Track.where(location: fpath).first
 
+    # check to see if track moved
+    if t.nil?
+      puts 'here1'
+      attribs = attributes_for_file_path(fpath)
+      t = Track.track_for_attribs(attribs).first 
+      # update the location
+      force_update = true unless t.nil?
+    end
+
+    # if not, create a new track
+    t = Track.new(attribs) and t.save if t.nil?
+
+    ap t
+    # TODO: remember why that time check is there
     if force_update || (Time.now - t.created_at < 5) || t.file_modified?
       puts "#{t.location}: updating attributes" if $DEBUG
       t.update_attributes(attributes_for_file_path(fpath))
@@ -129,6 +143,14 @@ class Track < ActiveRecord::Base
     end
 
     t
+  end
+
+  def self.track_for_attribs(attribs)
+    attribs = attribs.dup
+    ignore_attribs = [:mtime, :images, :location, :date, :original_date]
+    ignore_attribs.each { |attr| attribs.delete(attr) }
+
+    Track.where(attribs)
   end
 
   def self.attrib_or_fallback(attrib, fallback)
