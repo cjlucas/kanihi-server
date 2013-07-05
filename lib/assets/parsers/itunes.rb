@@ -1,72 +1,76 @@
-require 'nokogiri'
+require 'rexml/document'
+require 'rexml/streamlistener'
 
-TYPE_BEGIN_ELEMENT  = Nokogiri::XML::Reader::TYPE_ELEMENT
-TYPE_END_ELEMENT    = Nokogiri::XML::Reader::TYPE_END_ELEMENT
+class TrackListener
+  include REXML::StreamListener
+
+  attr_accessor :tracks
+
+  def initialize(&block)
+    @in_tag = nil
+    @current_track = {}
+    @current_key = nil
+    @depth = 1
+    @block = block
+    @tracks = []
+  end
+
+  def tag_start(name, attributes)
+    name.downcase!
+    
+    #ap "start: #{name}" 
+    # new track
+    if name.eql?('dict') && @depth == 4
+      @current_track = {}
+    end
+
+    if name.eql?('key') && @depth == 5
+      @in_tag = name
+    end
+
+    @depth += 1
+  end
+
+  def tag_end(name)
+    name.downcase!
+    @depth -= 1
+
+    # end of track
+    if @depth == 4 && name.eql?('dict')
+      if @block.nil?
+        @tracks << @current_track
+      else
+        @block.call(@current_track)
+      end
+    end
+
+    @in_tag = nil
+  end
+
+  def text(text)
+    if @in_tag.eql?('key')
+      @current_key = text
+    elsif !@current_key.nil?
+      @current_track[@current_key] = text
+      @current_key = nil
+    end
+  end
+end
 
 class ITunesLibrary
-  attr_reader :count, :tracks
-
-  def initialize(f)
-    @f = File.open(f)
-    @r = Nokogiri::XML::Reader(@f)
+  def initialize(xml)
+    @fp = File.open(xml)
   end
 
-  # if no block given, returns an array of track_infos
-  def self.parse(xml_file, &block)
-    it = self.new(xml_file)
-    it.read(block)
-  end
-  
-  def read(block)
-    track_infos = []
-    until @r.read.nil?
-      if @r.name.eql?('dict') && @r.depth == 3 # new track
-        track_info = get_track_info
-        unless block.nil?
-          block.call(track_info)
-        else
-          track_infos << track_info
-        end
-      end
-    end
-
-    track_infos if block.nil?
+  def parse(&block)
+    listener = TrackListener.new(&block)
+    stream_parser = REXML::Parsers::StreamParser.new(@fp, listener)
+    stream_parser.parse
+    @fp.close
   end
 
-  private
-
-  def get_track_info
-    track_info = {}
-    until @r.read.name.eql?('dict') && @r.node_type == TYPE_END_ELEMENT
-      if @r.name.eql?('key') && @r.node_type == TYPE_BEGIN_ELEMENT
-        key, value = read_key_value_pair
-        track_info[key] = value
-      end
-    end
-    track_info
+  def self.parse(xml, &block)
+    it = new(xml)
+    it.parse(&block) 
   end
-
-  ###
-  # @r position must be on opening key
-  def read_key_value_pair
-    key = @r.read.value
-    value_type = @r.read.read.name.downcase
-
-    value = true if value_type.eql? 'true'
-    value = false if value_type.eql? 'false'
-    value = self.class.cast(@r.read.value, value_type) if value.nil?
-
-    @r.read # close value tag
-    [key, value]
-  end
-
-  def self.cast(value, type)
-    case type.downcase
-    when 'integer'
-      value.to_i
-    else
-      value
-    end
-  end
-
 end
