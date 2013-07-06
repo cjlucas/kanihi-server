@@ -2,6 +2,9 @@ module MusicServer
   module Command
     module Source
       include Common
+      include ActionView::Helpers::DateHelper
+
+      UNSAFE = URI::REGEXP::PATTERN::RESERVED + ' '
 
       #
       # helpers

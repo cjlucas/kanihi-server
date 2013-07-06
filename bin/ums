@@ -5,25 +5,22 @@ require 'net/http'
 require 'optparse'
 require 'uri'
 
-submodules = ['common', 'source']
-submodules.each { |sub| require File.expand_path("../ums_#{sub}", __FILE__) }
 
-# this won't work if installing from a gemfile
+# Probably going to have to reconsider this
 RAILS_ROOT = File.expand_path('../..', __FILE__)
 COMMANDS = ['source', 'help'].freeze
 ACTIONS = {
   'source' => ['add', 'del', 'list', 'scan', 'help'],
 }
-UNSAFE = URI::REGEXP::PATTERN::RESERVED + ' '
 
 require File.expand_path('config/environment', RAILS_ROOT)
+
+submodules = ['common', 'source']
+submodules.each { |sub| require File.expand_path("../ums_#{sub}", __FILE__) }
 
 # submodules
 include MusicServer::Command::Common
 include MusicServer::Command::Source
-
-# helpers
-include ActionView::Helpers::DateHelper
 
 def puts_help
   puts [
@@ -65,5 +62,4 @@ when 'source'
 when 'help'
   puts_help
 end
-
 

@@ -4,10 +4,10 @@ module MusicServer
   module Command
     module Common
 
-      def user_confirmation
+      def user_confirmation(msg = 'Are you sure?')
         input = nil
         until input =~ /^(ye?s?|no?)$/i
-          print 'Are you sure? [y/n]: '
+          print "#{msg} [yes/no]: "
           input = gets.strip
           #puts "you entered \"#{input}\""
         end
