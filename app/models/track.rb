@@ -124,6 +124,10 @@ class Track < ActiveRecord::Base
     attribs
   end
 
+  #
+  # Note: this method is fairly expensive and should
+  # only be used when scanning a previously scanned source
+  #
   def self.track_for_file_path(fpath, force_update = false)
     fpath = File.absolute_path(fpath)
     t = Track.where(location: fpath).first

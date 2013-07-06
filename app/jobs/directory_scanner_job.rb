@@ -12,7 +12,7 @@ class DirectoryScannerJob < ScannerJob
     return unless File.readable?(filename) && supported_audio_file?(filename)
     fpath = File.expand_path(filename)
     
-    t = Track.track_for_file_path(fpath)
+    t = get_track_for_file_path(fpath)
 
     unless t.sources.include?(source)
       t.sources << source

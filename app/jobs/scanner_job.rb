@@ -30,4 +30,23 @@ class ScannerJob < BaseJob
     source.scanning = false
     source.save
   end
+
+  #
+  # Helper method that falls back to slow track lookup if create fails
+  #
+  def get_track_for_file_path(fpath, try_create = false)
+    lookup = true
+    t = nil
+    if try_create
+      attribs = Track.attributes_for_file_path(fpath)
+      t = Track.new(attribs)
+      # do a lookup if saving failed
+      lookup = !t.save
+    end
+    if lookup
+      t = Track.track_for_file_path(fpath)
+    end
+
+    t 
+  end
 end

@@ -12,18 +12,16 @@ class ITunesLibraryScannerJob < ScannerJob
     
     raise JobError, 'Source is no longer in database' if source.nil?
 
-    uris = get_uris
+    # add/update tracks
+    get_uris.each do |uri|
+      handle_uri(uri)
+      exit if halt
+    end
+    
     # remove tracks from database that are no longer in iTunes library
     source.tracks.all.each do |track|
       next if uris.include?(URI::File.new_with_path(track.location))
-      #logger.info("Deleting #{track.uri} from database")
       track.destroy
-      exit if halt
-    end
-
-    # add/update tracks
-    uris.each do |uri|
-      handle_uri(uri)
       exit if halt
     end
   end
@@ -53,21 +51,11 @@ class ITunesLibraryScannerJob < ScannerJob
   def handle_uri(uri)
     fpath = self.class.uri_to_path(uri)
     if File.exists?(fpath)
-      t = Track.track_for_file_path(fpath)
+      t = get_track_for_file_path(fpath)
       unless t.sources.include?(source)
         t.sources << source
         t.save
       end
-      
-      #now = Time.now
-      #if now - t.created_at < 5
-        #logger.info("Added #{fpath}")
-      #elsif now - t.updated_at < 5
-        #logger.info("Updated #{fpath}")
-      #end
-
-    else
-      #logger.info("#{fpath} doesn't exist. Skipping.")
     end
   end
 
