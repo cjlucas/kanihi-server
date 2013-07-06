@@ -91,7 +91,7 @@ module MusicServer
         }
 
         default_settings.each do |setting, value|
-          AppConfig[setting] = value unless AppConfig.exists?(setting)
+          AppConfig[setting] = value unless AppConfig.exist?(setting)
         end
 
         AppConfig.save
