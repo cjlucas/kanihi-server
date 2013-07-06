@@ -31,6 +31,11 @@ class DirectoryScannerJob < ScannerJob
       handle_file(filename) if File.file?(filename)
       exit if halt
     end
+
+    source.tracks.all.each do |track|
+      track.destroy unless File.exists?(track.location)
+      exit if halt
+    end
   end
 
 end
