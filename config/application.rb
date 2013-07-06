@@ -74,19 +74,24 @@ module MusicServer
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # show sql statements in console
+    config.logger = Logger.new(STDOUT) if $0.eql?('irb')
+
     config.after_initialize do
       AppConfig.configure(:model => Setting)
-      default_settings = {
-        :debug        => false,
-        :host         => '0.0.0.0',
-        :port         => 8080,
-        :auth_user    => nil,
-        :auth_pass    => nil,
-      }
       if Setting.table_exists?
-        AppConfig.reload
+        AppConfig.load
+
+        default_settings = {
+          :debug        => false,
+          :host         => '0.0.0.0',
+          :port         => 8080,
+          :auth_user    => nil,
+          :auth_pass    => nil,
+        }
+
         default_settings.each do |setting, value|
-          AppConfig[setting] = value unless AppConfig.exist?(setting)
+          AppConfig[setting] = value unless AppConfig.exists?(setting)
         end
 
         AppConfig.save
