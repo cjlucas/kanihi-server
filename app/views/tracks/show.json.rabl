@@ -1,2 +1,24 @@
 object @track
-attributes :location, :track_name
+attribute :uuid
+attribute :track_name
+attribute :subtitle
+attribute :track_num
+attribute :track_total
+attribute :track_artist
+attribute :track_artist_sort_order
+attribute :album_artist
+attribute :album_artist_sort_order
+attribute :album_name
+attribute :genre
+attribute :date
+attribute :original_date
+attribute :disc_num
+attribute :disc_total
+attribute :disc_subtitle
+attribute :group
+attribute :lyrics
+attribute :composer
+attribute :mood
+attribute :compilation
+attribute :comment
+attribute :duration
