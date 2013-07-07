@@ -1,8 +1,21 @@
+require 'awesome_print'
+
 class TracksController < ApplicationController
   # GET /tracks
   # GET /tracks.json
   def index
-    @tracks = Track.all
+    @limit = request.headers['SQL-Limit']
+    @offset = request.headers['SQL-Offset']
+    last_updated_s = request.headers['Last-Updated-At']
+    @last_updated = Time.at(0) if last_updated_s.nil?
+    @last_updated = DateTime.parse(last_updated_s) unless last_updated_s.nil?
+    @last_updated = @last_updated.utc
+
+    @tracks = Track.order('updated_at ASC')
+      .limit(@limit)
+      .offset(@offset)
+      .where('updated_at >= ?', @last_updated)
+
 
     respond_to do |format|
       format.html # index.html.erb
