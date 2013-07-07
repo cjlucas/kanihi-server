@@ -7,7 +7,6 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -21,9 +20,6 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
-# for itunes library parsing
-gem 'nokogiri'
 
 # for json api
 gem 'rabl'
@@ -43,6 +39,9 @@ gem 'cjutils', path: '/Users/chris/repos/ruby-cjutils'
 
 gem 'uuidtools'
 
+group :development do
+  gem 'awesome_print'
+end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
