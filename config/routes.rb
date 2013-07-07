@@ -1,22 +1,31 @@
 MusicServer::Application.routes.draw do
+  uuid_re = /\w{8}\-(\w{4}\-){3}\w{12}/i
+
+  # sources
   resources :sources
   match 'sources/:id/scan' => 'sources#scan'
+
+  # images
   resources :images
+
+  # tracks
+  get 'tracks/:uuid', :to => 'tracks#show', :uuid => uuid_re
   resources :tracks
 
+  # settings
   match 'settings/update' => 'settings#update'
   match 'settings' => 'settings#index'
 
-  
+  # application 
   match 'restart' => 'application#restart'
   match 'info' => 'application#info'
   match 'shutdown' => 'application#shutdown'
+  root :to => 'application#index'
 
+  # daemons
   match 'daemons/stop' => 'daemons#stop'
   match 'daemons/start' => 'daemons#start'
   match 'daemons/restart' => 'daemons#restart'
-
-  root :to => 'application#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

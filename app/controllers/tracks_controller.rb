@@ -26,7 +26,9 @@ class TracksController < ApplicationController
   # GET /tracks/1
   # GET /tracks/1.json
   def show
-    @track = Track.find(params[:id])
+    @track = Track.find(params[:id]) unless params[:id].nil?
+    @track = Track.where(:uuid => params[:uuid]) unless params[:uuid].nil?
+
     #respond_to do |format|
       #format.html # show.html.erb
       #format.json # show.json.rabl
