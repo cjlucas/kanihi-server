@@ -14,7 +14,7 @@ module MusicServer
         case
         when File.directory?(path)
           0 # DIRECTORY
-        when File.file?(path) && File.extname(path).downcase.eql?('xml')
+        when File.file?(path) && File.extname(path).downcase.eql?('.xml')
           1 # ITUNES_LIBRARY_XML_FILE
         else
           -1
