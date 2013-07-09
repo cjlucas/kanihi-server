@@ -8,8 +8,12 @@ require 'time'
 require 'digest/sha1'
 
 $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
-$LOAD_PATH.unshift(File.expand_path('../../app/jobs', __FILE__))
-Dir['app/jobs/*rb'].each { |fpath| require File.basename(fpath) }
+
+JOBS_DIR = File.expand_path('../../app/jobs', __FILE__)
+$LOAD_PATH.unshift(JOBS_DIR)
+
+Dir[File.join(JOBS_DIR, '*rb')].each { |fpath| require File.basename(fpath) }
+
 require 'uri/file'
 
 Rabl.configure do |config|
