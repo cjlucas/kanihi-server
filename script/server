@@ -15,10 +15,10 @@ options = {
 }
 
 Daemons.run_proc('rails_server', options) do
+  Dir.chdir(RAILS_ROOT)
   require File.join(RAILS_ROOT, 'config/environment')
   require 'rails/commands/server'
 
-  Dir.chdir(RAILS_ROOT)
   # ignore whatever args are passed (causes issues with Server::Options)
   ARGV.clear
 
@@ -28,6 +28,6 @@ Daemons.run_proc('rails_server', options) do
   s = Rails::Server.new
   s.options[:Host] = AppConfig[:host]
   s.options[:Port] = AppConfig[:port]
-  s.options[:daemonize] = ENV['RAILS_ENV'].eql?('production')
+  s.options[:daemonize] = false
   s.start
 end
