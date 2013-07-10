@@ -39,6 +39,8 @@ gem 'cjutils', path: '/Users/chris/repos/ruby-cjutils'
 
 gem 'uuidtools'
 
+gem "mini_magick"
+
 group :development do
   gem 'awesome_print'
 end
