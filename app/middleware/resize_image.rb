@@ -39,7 +39,7 @@ class ResizeImage
   end
 
   def resize_image
-    src_io = read_response
+    src_io = read_response and src_io.rewind
     req_w = @env['HTTP_IMAGE_RESIZE_WIDTH']
     req_h = @env['HTTP_IMAGE_RESIZE_HEIGHT']
     src_w, src_h = ImageSpec.new(src_io).dimensions
@@ -61,9 +61,9 @@ class ResizeImage
       return
     end
 
-    #src_io.rewind
-    #puts "Src IO Size", src_io.size
-
+    puts "Src IO Size", src_io.size
+    
+    src_io.rewind
     img = MiniMagick::Image.read(src_io) and src_io.close
     img.resize "#{new_w}x#{new_h}"
     img.quality "92"
