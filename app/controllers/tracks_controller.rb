@@ -16,7 +16,6 @@ class TracksController < ApplicationController
       .offset(@offset)
       .where('updated_at >= ?', @last_updated)
 
-
     respond_to do |format|
       format.html # index.html.erb
       format.json # index.json.rabl
@@ -33,6 +32,19 @@ class TracksController < ApplicationController
       #format.html # show.html.erb
       #format.json # show.json.rabl
     #end
+  end
+
+  def artwork
+    @track = Track.find(params[:id])
+    @pos = (params[:pos] || 1).to_i
+
+    et = EasyTag::File.new(@track.location) rescue nil
+    raise if et.nil?
+    
+    et_img = et.album_art[@pos]
+    raise if et_img.nil?
+
+    send_data et_img.data, :type => et_img.mime_type, :disposition => :inline
   end
 
   ## GET /tracks/new
