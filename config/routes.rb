@@ -10,7 +10,7 @@ MusicServer::Application.routes.draw do
 
   # tracks
   get 'tracks/:uuid', :to => 'tracks#show', :uuid => uuid_re
-  get 'tracks/:id/artwork', :to => 'tracks#artwork' # default pos is 1
+  get 'tracks/:id/artwork', :to => 'tracks#artwork', :defaults => { :pos => 1 }
   get 'tracks/:id/artwork/:pos', :to => 'tracks#artwork'
   resources :tracks
 

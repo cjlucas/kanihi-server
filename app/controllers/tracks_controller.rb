@@ -36,7 +36,7 @@ class TracksController < ApplicationController
 
   def artwork
     @track = Track.find(params[:id])
-    @pos = (params[:pos] || 1).to_i
+    @pos = params[:pos].to_i - 1
 
     et = EasyTag::File.new(@track.location) rescue nil
     raise if et.nil?
