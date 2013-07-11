@@ -30,12 +30,12 @@ gem 'taglib-ruby', github: 'robinst/taglib-ruby', ref: 'bb6453e2e3404cbc8d1e3056
 gem 'delayed_job'
 gem 'delayed_job_active_record'
 
-#gem 'app-config', github: 'cjlucas/app-config'
-gem 'app-config', path: '/Users/chris/repos/app-config'
+gem 'app-config', :github => 'cjlucas/app-config'
+#gem 'app-config', path: '/Users/chris/repos/app-config'
 
 gem 'daemons'
 
-gem 'cjutils', path: '/Users/chris/repos/ruby-cjutils'
+gem 'cjutils', :github => 'cjlucas/cjutils-ruby'
 
 gem 'uuidtools'
 
