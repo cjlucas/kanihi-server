@@ -12,8 +12,12 @@ class ITunesLibraryScannerJob < ScannerJob
     
     raise JobError, 'Source is no longer in database' if source.nil?
 
+    # TODO: refactor me, tracks should be added/updated while
+    # the XML is being traversed, not afterward
+    uris = get_uris
+
     # add/update tracks
-    get_uris.each do |uri|
+    uris.each do |uri|
       handle_uri(uri)
       exit if halt
     end
