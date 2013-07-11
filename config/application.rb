@@ -15,6 +15,7 @@ $LOAD_PATH.unshift(JOBS_DIR)
 Dir[File.join(JOBS_DIR, '*rb')].each { |fpath| require File.basename(fpath) }
 
 require 'uri/file'
+require 'cjutils/path'
 
 Rabl.configure do |config|
 end
