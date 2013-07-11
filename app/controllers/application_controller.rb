@@ -3,6 +3,7 @@ require 'cjutils/process'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   respond_to :json
+  #http_basic_authenticate_with name: 'chris', password: 'test', except: :info
 
   def index
     @sources = Source.all
@@ -47,7 +48,7 @@ class ApplicationController < ActionController::Base
     @info.server_version = MusicServer::Application::VERSION
     @info.track_count = Track.count
     @info.image_count = Image.count
-    @info.server_time = Time.now
+    @info.server_time = Time.now.utc
     jobs_query = ['SELECT * from delayed_jobs',
                   'ORDER BY locked_at DESC, priority ASC'].join(' ')
     @info.jobs = process_jobs(Delayed::Job.find_by_sql(jobs_query))
