@@ -1,0 +1,15 @@
+<script>
+  port = <%= @port %>;
+  var urlreg = /http\:\/\/([^\:\/]*)[\:\/]?/i;
+
+  if (urlreg.test(window.location.href)) {
+    var host = urlreg.exec(window.location.href)[1];
+    var url = "http://" + host + ":" + port;
+  } else {
+    var url = window.location.href;
+  }
+
+  document.write('<meta http-equiv="refresh" content="3; ' + url + '">');
+
+  document.write('Redirecting to ' + url);
+</script>
