@@ -19,3 +19,6 @@ db/*sqlite3
 .yardoc
 _yardoc
 doc/
+
+/.ruby-gemset
+/.ruby-version
