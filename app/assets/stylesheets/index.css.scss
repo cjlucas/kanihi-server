@@ -1,3 +1,7 @@
+$navbar: #3D3149;
+$h2: $navbar;
+$table_head: #FFD075;
+
 body
 {
   padding-top: 0px;
@@ -5,7 +9,7 @@ body
 
 .navbar-inner
 {
-  background-color: #796EA2;
+  background-color: $navbar;
   border-radius: 0;
 }
 div#sidebar
@@ -24,7 +28,8 @@ div#main
 
 div#main h2
 {
-  background-color: pink;
+  background-color: $h2;
+  color: white;
   margin: 0 0 0 0;
 }
 
@@ -37,18 +42,17 @@ div#main table
 /* Header of each table */
 div#main tr:first-child
 {
-  background-color: black;
+  background-color: $table_head;
   color: white;
 }
 
 div#main tr:nth-child(2n+2)
 {
-  background-color: #ccc;
+  background-color: lighten($table_head, 20%);
 }
 
 div#sidebar
 {
-  background-color: orange;
   padding: 10px;
 }
 
