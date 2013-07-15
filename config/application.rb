@@ -20,6 +20,10 @@ require 'cjutils/path'
 Rabl.configure do |config|
 end
 
+require 'fileutils'
+PID_DIR = File.expand_path('../../tmp/pids', __FILE__)
+FileUtils.mkdir_p(PID_DIR) unless File.exists?(PID_DIR)
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
