@@ -15,7 +15,7 @@ options = {
 }
 
 Daemons.run_proc('job_scheduler', options) do
-  require '/Users/chris/repos/music_server/config/environment'
+  require File.join(RAILS_ROOT, 'config/environment')
   runner = JobScheduler.new
   runner.run
 end
