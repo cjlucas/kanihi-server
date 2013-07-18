@@ -47,6 +47,23 @@ class TracksController < ApplicationController
     send_data et_img.data, :type => et_img.mime_type, :disposition => :inline
   end
 
+  # POST /tracks/deleted.json
+  # Params (JSON)
+  #   - a hash with one key, 'current_tracks', value is an array of uuids
+  # Response
+  #   - a hash with one key, 'deleted_tracks, value is an array of uuids
+  def deleted # Think of a better name
+    json_body = ActiveSupport::JSON.decode(request.body)
+
+    deleted_tracks = json_body['current_tracks']
+    # remove uuid from deleted_tracks array if still exists in db
+    Track.select(:uuid).each { |t| deleted_tracks.delete(t.uuid) }
+
+    respond_to do |format|
+      format.json { render json: {'deleted_tracks' => deleted_tracks} }
+    end
+  end
+
   ## GET /tracks/new
   ## GET /tracks/new.json
   #def new
