@@ -35,9 +35,15 @@ class TracksController < ApplicationController
   end
 
   def artwork
-    @track = Track.find(params[:id])
-    @pos = params[:pos].to_i - 1
+    @track = case
+             when !params[:id].nil?
+               Track.find(params[:id])
+             when !params[:uuid].nil?
+               Track.where(:uuid => params[:uuid]).limit(1).first
+             end
 
+    @pos = params[:pos].to_i - 1
+    
     et = EasyTag::File.new(@track.location) rescue nil
     raise if et.nil?
     
