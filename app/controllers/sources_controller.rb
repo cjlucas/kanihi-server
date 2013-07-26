@@ -24,10 +24,16 @@ class SourcesController < ApplicationController
 
   def destroy
     @source = Source.find(params[:id])
-    # when a source is destroyed, the relationship entries are deleted too
-    @source.destroy
+    
+    # calling destroy caused rails to hang, so we'll
+    # handle deleting the relationships ourselves
+    @source.delete
 
-    Delayed::Job.enqueue(PurgeOrphanedTracksJob.new)
+    sql = "DELETE from sources_tracks WHERE source_id = #{@source.id}"
+    ActiveRecord::Base.connection.execute(sql)
+
+    PurgeOrphanedTracksJob.new.add
+    
     head :no_content
   end
 
