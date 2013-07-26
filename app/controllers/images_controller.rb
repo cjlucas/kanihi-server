@@ -1,6 +1,13 @@
 class ImagesController < ApplicationController
   def show
-    @image = Image.find(params[:id])
+    if !params[:id].nil?
+      @image = Image.find(params[:id])
+    elsif !params[:checksum].nil?
+      @image = Image.where(:checksum => params[:checksum]).limit(1).first
+    end
+
+    raise if @image.nil?
+
     et_img = find_easytag_image
     raise ActionController::RoutingError.new('Image not found') if et_img.nil?
     send_data et_img.data, type: et_img.mime_type, disposition: :inline

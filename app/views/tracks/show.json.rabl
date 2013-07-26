@@ -23,7 +23,11 @@ track_attributes = [
   :mood,
   :compilation,
   :comment,
-  :duration
+  :duration,
 ]
 
 attributes(*track_attributes)
+
+child :images do
+  attributes :checksum, :type, :description
+end

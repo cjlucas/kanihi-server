@@ -1,11 +1,12 @@
 MusicServer::Application.routes.draw do
   uuid_re = /\w{8}\-(\w{4}\-){3}\w{12}/i
-
+  sha1_re = /\w{40}/i
   # sources
   resources :sources
   match 'sources/:id/scan' => 'sources#scan'
 
   # images
+  get 'images/:checksum', :to => 'images#show', :checksum => sha1_re
   resources :images
 
   # tracks
