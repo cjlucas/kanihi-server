@@ -14,8 +14,10 @@ class ITunesLibraryScannerJob < ScannerJob
 
     # TODO: refactor me, tracks should be added/updated while
     # the XML is being traversed, not afterward
+    puts 'Parsing XML file'
     uris = get_uris
 
+    puts 'Adding/updating tracks'
     # add/update tracks
     uris.each do |uri|
       handle_uri(uri)
@@ -23,11 +25,26 @@ class ITunesLibraryScannerJob < ScannerJob
     end
     
     # remove tracks from database that are no longer in iTunes library
-    source.tracks.all.each do |track|
-      next if uris.include?(URI::File.new_with_path(track.location))
+    puts 'Deleting tracks'
+    #start = Time.now
+    paths = []
+    uris.each { |uri| paths << self.class.uri_to_path(uri) }
+
+    Track.where('location NOT IN (?)', paths).each do |track|
+      puts "Deleting track #{track}"
       track.destroy
       exit if halt
     end
+
+    #puts "Execution Time: #{Time.now - start}"
+    #source.tracks.all.each do |track|
+      #start = Time.now
+      #uris.include?(URI::File.new_with_path(track.location))
+      #puts "Execution Time: #{Time.now - start}"
+      #next if uris.include?(URI::File.new_with_path(track.location))
+      #track.destroy
+      #exit if halt
+    #end
   end
 
   def get_uris
