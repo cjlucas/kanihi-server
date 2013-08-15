@@ -2,7 +2,7 @@ require 'base_job'
 
 class PurgeOrphanedTracksJob < BaseJob
   def perform
-    Track.all.each do |track|
+    Track.find_each do |track|
       track.destroy if track.sources.empty?
     end
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710170000) do
+ActiveRecord::Schema.define(:version => 20130815121301) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -43,6 +43,9 @@ ActiveRecord::Schema.define(:version => 20130710170000) do
     t.integer "image_id"
   end
 
+  add_index "images_tracks", ["image_id"], :name => "index_images_tracks_on_image_id"
+  add_index "images_tracks", ["track_id"], :name => "index_images_tracks_on_track_id"
+
   create_table "settings", :force => true do |t|
     t.string   "keyname",      :limit => 64,                        :null => false
     t.text     "value"
@@ -67,6 +70,9 @@ ActiveRecord::Schema.define(:version => 20130710170000) do
     t.integer "source_id"
     t.integer "track_id"
   end
+
+  add_index "sources_tracks", ["source_id"], :name => "index_sources_tracks_on_source_id"
+  add_index "sources_tracks", ["track_id"], :name => "index_sources_tracks_on_track_id"
 
   create_table "tracks", :force => true do |t|
     t.string   "track_name"
