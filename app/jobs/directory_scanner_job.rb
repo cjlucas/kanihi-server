@@ -21,20 +21,15 @@ class DirectoryScannerJob < ScannerJob
   end
 
   def perform
-    halt = false
-    Signal.trap(:TERM) { halt = true }
-    
     raise JobError, 'Source is no longer in database' if source.nil?
 
     source_glob = File.join(source.location, '**/*')
     Dir.glob(source_glob) do |filename|
       handle_file(filename) if File.file?(filename)
-      exit if halt
     end
 
     source.tracks.all.each do |track|
       track.destroy unless File.exists?(track.location)
-      exit if halt
     end
   end
 

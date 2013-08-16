@@ -1,6 +1,8 @@
 require 'base_job'
 
 class ScannerJob < BaseJob
+  alias :super_after :after
+
   def self.job_for_source(source)
     case source.source_type
     when Source::Type::DIRECTORY
@@ -29,6 +31,8 @@ class ScannerJob < BaseJob
   def after(job)
     source.scanning = false
     source.save
+
+    super_after(job)
   end
 
   #

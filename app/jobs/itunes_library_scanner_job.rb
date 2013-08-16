@@ -7,13 +7,8 @@ class ITunesLibraryScannerJob < ScannerJob
   extend CJUtils::Path
   
   def perform
-    halt = false
-    Signal.trap('TERM') { halt = true }
-    
     raise JobError, 'Source is no longer in database' if source.nil?
 
-    # TODO: refactor me, tracks should be added/updated while
-    # the XML is being traversed, not afterward
     puts 'Parsing XML file'
     uris = get_uris
 
@@ -21,29 +16,24 @@ class ITunesLibraryScannerJob < ScannerJob
     # add/update tracks
     uris.each do |uri|
       handle_uri(uri)
-      exit if halt
     end
-    
+
     # remove tracks from database that are no longer in iTunes library
     puts 'Deleting tracks'
     #start = Time.now
     paths = []
     uris.each { |uri| paths << self.class.uri_to_path(uri) }
 
-    Track.where('location NOT IN (?)', paths).each do |track|
-      puts "Deleting track #{track}"
-      track.destroy
-      exit if halt
-    end
+    Track.where('location NOT IN (?)', paths).each { |track| track.destroy }
 
     #puts "Execution Time: #{Time.now - start}"
     #source.tracks.all.each do |track|
-      #start = Time.now
-      #uris.include?(URI::File.new_with_path(track.location))
-      #puts "Execution Time: #{Time.now - start}"
-      #next if uris.include?(URI::File.new_with_path(track.location))
-      #track.destroy
-      #exit if halt
+    #start = Time.now
+    #uris.include?(URI::File.new_with_path(track.location))
+    #puts "Execution Time: #{Time.now - start}"
+    #next if uris.include?(URI::File.new_with_path(track.location))
+    #track.destroy
+    #exit if halt
     #end
   end
 

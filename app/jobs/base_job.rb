@@ -48,7 +48,7 @@ class BaseJob
   def add
     Delayed::Job.enqueue(self, priority: priority)
   end
-  
+
   def log_header(job)
     logger.info('starting job:')
     logger.info(job.handler)
@@ -62,7 +62,7 @@ class BaseJob
     logger = Logger.new(log_path(job_id))
     logger.level = $DEBUG ? Logger::DEBUG : Logger::INFO
     logger.formatter = proc do |severity, datetime, progname, msg|
-      "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')}] #{severity} - #{msg}\n" 
+      "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')} (ID: #{job_id})] #{severity} - #{msg}\n" 
     end
 
     logger
