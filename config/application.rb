@@ -101,11 +101,15 @@ module MusicServer
           :auth_pass    => nil,
         }
 
+        should_save = false
         default_settings.each do |setting, value|
-          AppConfig[setting] = value unless AppConfig.exist?(setting)
+          unless AppConfig.exist?(setting)
+            AppConfig[setting] = value
+            should_save = true
+          end
         end
 
-        AppConfig.save
+        AppConfig.save if should_save
       end
     end
   end
