@@ -77,7 +77,7 @@ class ScannerJob < BaseJob
       handle_easytag_exception { attribs = attributes_for_file_path(fpath) }
       return nil if attribs.empty?
 
-      t = Track.track_for_attribs(attribs)
+      t = Track.track_for_attributes(attribs)
       force_update = true
     end
 

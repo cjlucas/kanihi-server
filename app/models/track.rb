@@ -60,7 +60,7 @@ class Track < ActiveRecord::Base
     where(location: fpath).first
   end
 
-  def self.track_for_attribs(attribs)
+  def self.track_for_attributes(attribs)
     attribs = attribs.dup
     ignore_attribs = [:mtime, :images, :location, :date, :original_date]
     ignore_attribs.each { |attr| attribs.delete(attr) }
