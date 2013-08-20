@@ -63,6 +63,8 @@ class ITunesLibraryScannerJob < ScannerJob
     fpath = self.class.uri_to_path(uri)
     if File.exists?(fpath)
       t = get_track_for_file_path(fpath)
+      return if t.nil?
+
       unless t.sources.include?(source)
         t.sources << source
         t.save

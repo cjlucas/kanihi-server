@@ -13,6 +13,7 @@ class DirectoryScannerJob < ScannerJob
     fpath = File.expand_path(filename)
     
     t = get_track_for_file_path(fpath)
+    return if t.nil?
 
     unless t.sources.include?(source)
       t.sources << source
