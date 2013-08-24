@@ -2,7 +2,7 @@ class JobScheduler
   SLEEP_TIME = 1
 
   def check_sources
-    Source.all.each do |source|
+    Source.find_each do |source|
       next if source.scan_interval == 0 \
         || source.last_scanned_at.nil? \
         || source.scanning == true
