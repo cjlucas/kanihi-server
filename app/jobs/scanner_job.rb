@@ -3,25 +3,31 @@ require 'base_job'
 class ScannerJob < BaseJob
   alias :super_after :after
 
-  # simple mappings
-  EASYTAG_ATTRIB_MAP = {
-    :album_name               => :album,
-    :composer                 => :composer,
-    :compilation              => :compilation?,
-    :date                     => :date,
-    :disc_subtitle            => :disc_subtitle,
-    :duration                 => :duration,
-    :genre                    => :genre,
-    :group                    => :group,
-    :lyrics                   => :lyrics,
-    :mood                     => :mood,
-    :original_date            => :original_date,
-    :subtitle                 => :subtitle,
-    :track_artist             => :artist,
-    :track_artist_sort_order  => :artist_sort_order,
-    :track_name               => :title,
-    :comment                  => :comment
-  }
+  EASYTAG_ATTRIBUTES = [
+    :album,
+    :album_sort_order,
+    :composer,
+    :compilation?,
+    :date,
+    :disc_subtitle,
+    :duration,
+    :genre,
+    :group,
+    :lyrics,
+    :mood,
+    :original_date,
+    :subtitle,
+    :artist,
+    :artist_sort_order,
+    :title,
+    :title_sort_order,
+    :comment,
+    :album_artist,
+    :album_artist_sort_order,
+    :album_art,
+    :track_num,
+    :disc_num
+    ].freeze
 
   def self.job_for_source(source)
     case source.source_type
@@ -60,7 +66,7 @@ class ScannerJob < BaseJob
   #
   def get_track_for_file_path(fpath)
     t = nil
-    attribs = {}
+    easytag_attrs = {}
     force_update = false
 
     t = Track.track_for_file_path(fpath)
@@ -74,21 +80,27 @@ class ScannerJob < BaseJob
 
     # lookup by attributes
     if t.nil?
-      handle_easytag_exception { attribs = attributes_for_file_path(fpath) }
-      return nil if attribs.empty?
+      handle_easytag_exception do 
+        easytag_attrs = et_attrs_for_file_path(fpath)
+      end
+      return nil if easytag_attrs.empty?
 
+      attribs = track_attributes_for_et_attrs(easytag_attrs)
       t = Track.track_for_attributes(attribs)
       force_update = true
     end
 
     # create track if one doesn't already exist
-    t ||= Track.new
+    t ||= Track.new_with_location(fpath)
 
     if force_update || !t.persisted? || t.file_modified?
       puts "#{t.location}: updating attributes" if $DEBUG
-      attribs = attributes_for_file_path(fpath) if attribs.empty?
-      t.update_attributes(attribs)
-      t.save
+
+      if easytag_attrs.empty?
+        easytag_attrs = et_attrs_for_file_path(fpath)
+      end
+
+      update_models(t, easytag_attrs)
     end
 
     t 
@@ -106,50 +118,106 @@ class ScannerJob < BaseJob
     end
   end
 
-  def attributes_for_file_path(fpath)
-    attribs = {}
+  def et_attrs_for_file_path(fpath)
+    attributes = {}
 
     EasyTag::File.open(fpath) do |et|
-      attribs[:location] = File.absolute_path(fpath)
-
-      EASYTAG_ATTRIB_MAP.each do |key, value|
-        attribs[key] = et.send(value)
+      EASYTAG_ATTRIBUTES.each do |attr|
+        attributes[attr] = attrib_or_nil(et.send(attr))
       end
-
-      # fallback: track_artist
-      attribs[:album_artist] = attrib_or_fallback(et.album_artist, et.artist)
-
-      # fallback to track_artist_sort_order
-      attribs[:album_artist_sort_order] = attrib_or_fallback(
-        et.album_artist_sort_order,
-        attribs[:track_artist_sort_order])
-
-      # track num/total
-      attribs[:track_num], attribs[:track_total] = et.track_num
-
-      # disc num/total
-      attribs[:disc_num], attribs[:disc_total] = et.disc_num
-
-      # images
-      attribs[:images] = []
-      et.album_art.each do |et_img|
-        img = Image.image_for_data(et_img.data)
-        attribs[:images] << img unless attribs[:images].include?(img)
-      end
-
-      # size, mtime
-      fstat = File.stat(fpath)
-      attribs[:size] = fstat.size
-      attribs[:mtime] = fstat.mtime
-      attribs[:filesystem_id] = generate_filesystem_id(fstat)
-
-      attribs.each do |attrib, value|
-        attribs[attrib] = attrib_or_nil(value)
-      end
-
     end
 
-    attribs
+    attributes
+  end
+
+  def track_attributes_for_et_attrs(et_attrs)
+    Hash.new.tap do |track_attrs|
+      [
+        :comment, :composer, :date, :original_date, :duration, :group,
+        :lyrics, :mood, :subtitle
+      ].each { |attr| track_attrs[attr] = et_attrs[attr] }
+
+      track_attrs[:name] = et_attrs.fetch(:title)
+      track_attrs[:num]  = et_attrs.fetch(:track_num).first
+    end
+  end
+
+  def update_models(track, et_attrs)
+    track_artist = nil
+    album_artist = nil
+    album = nil
+    disc = nil
+    genre = nil
+
+    # album artist
+    album_artist_attrs = Hash.new.tap do |attrs|
+      attrs[:name] = et_attrs.fetch(:album_artist) || et_attrs.fetch(:artist)
+      attrs[:sort_name] = et_attrs.fetch(:album_artist_sort_order) ||
+        et_attrs.fetch(:album_artist_sort_order)
+    end
+
+    album_artist = AlbumArtist.unique_record_with_attributes(album_artist_attrs)
+    
+    # album
+    album_attrs = Hash.new.tap do |attrs|
+      attrs[:name] = et_attrs.fetch(:album)
+      attrs[:album_artist] = album_artist
+    end
+
+    album = Album.unique_record_with_attributes(album_attrs)
+
+    # disc
+    disc_attrs = Hash.new.tap do |attrs|
+      attrs[:num] = et_attrs.fetch(:disc_num).first
+      attrs[:subtitle] = et_attrs.fetch(:disc_subtitle)
+      attrs[:total_tracks] = et_attrs.fetch(:track_num).last
+      attrs[:album] = album
+    end
+
+    disc = Disc.unique_record_with_attributes(disc_attrs)
+
+    # track artist
+    track_artist_attrs = Hash.new.tap do |attrs|
+      attrs[:name] = et_attrs.fetch(:artist)
+      attrs[:sort_name] = et_attrs.fetch(:artist_sort_order)
+    end
+
+    track_artist = TrackArtist.unique_record_with_attributes(track_artist_attrs)
+
+    # genre
+    genre_attrs = Hash.new.tap do |attrs|
+      attrs[:name] = et_attrs[:genre] unless et_attrs.fetch(:genre).nil?
+    end
+
+    unless genre_attrs.empty?
+      genre = Genre.unique_record_with_attributes(genre_attrs)
+    end
+
+    # track
+    fstat = File.stat(track.location)
+    track.size  = fstat.size
+    track.mtime = fstat.mtime
+    track.filesystem_id = generate_filesystem_id(fstat)
+
+    track_attrs = track_attributes_for_et_attrs(et_attrs)
+    track.update_attributes(track_attrs)
+    track.genre = genre
+    track.track_artist = track_artist
+    track.disc = disc
+
+    # images
+    et_attrs[:album_art].each do |et_img|
+      img = Image.image_for_data(et_img.data)
+      track.images << img unless track.images.include?(img)
+    end
+
+    return {
+      track: track, 
+      genre: genre, 
+      album_artist: album_artist,
+      track_artist: track_artist, 
+      disc: disc
+    }
   end
 
   def generate_filesystem_id(stat)

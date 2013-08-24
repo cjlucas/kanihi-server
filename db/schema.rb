@@ -11,7 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815121301) do
+ActiveRecord::Schema.define(:version => 20130823140000) do
+
+  create_table "album_artists", :force => true do |t|
+    t.string   "name",            :null => false
+    t.string   "sort_name"
+    t.string   "uuid",            :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "name_normalized"
+  end
+
+  create_table "albums", :force => true do |t|
+    t.string   "name"
+    t.string   "uuid",            :null => false
+    t.integer  "album_artist_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "name_normalized"
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -28,6 +46,24 @@ ActiveRecord::Schema.define(:version => 20130815121301) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "discs", :force => true do |t|
+    t.integer  "num"
+    t.string   "subtitle"
+    t.integer  "total_tracks"
+    t.string   "uuid",         :null => false
+    t.integer  "album_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "genres", :force => true do |t|
+    t.string   "name"
+    t.string   "uuid",            :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "name_normalized"
+  end
 
   create_table "images", :force => true do |t|
     t.string   "type"
@@ -74,22 +110,22 @@ ActiveRecord::Schema.define(:version => 20130815121301) do
   add_index "sources_tracks", ["source_id"], :name => "index_sources_tracks_on_source_id"
   add_index "sources_tracks", ["track_id"], :name => "index_sources_tracks_on_track_id"
 
+  create_table "track_artists", :force => true do |t|
+    t.string   "name",            :null => false
+    t.string   "sort_name"
+    t.string   "uuid",            :null => false
+    t.integer  "track_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "name_normalized"
+  end
+
   create_table "tracks", :force => true do |t|
-    t.string   "track_name"
+    t.string   "name"
     t.string   "subtitle"
-    t.integer  "track_num"
-    t.integer  "track_total"
-    t.string   "track_artist"
-    t.string   "track_artist_sort_order"
-    t.string   "album_artist"
-    t.string   "album_artist_sort_order"
-    t.string   "album_name"
-    t.string   "genre"
+    t.integer  "num"
     t.datetime "date"
     t.datetime "original_date"
-    t.integer  "disc_num"
-    t.integer  "disc_total"
-    t.string   "disc_subtitle"
     t.string   "group"
     t.string   "lyrics"
     t.string   "composer"
@@ -100,10 +136,13 @@ ActiveRecord::Schema.define(:version => 20130815121301) do
     t.datetime "mtime"
     t.integer  "size"
     t.string   "location"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "uuid"
     t.integer  "filesystem_id"
+    t.integer  "disc_id"
+    t.integer  "genre_id"
+    t.integer  "track_artist_id"
   end
 
   add_index "tracks", ["location"], :name => "index_tracks_on_location"
