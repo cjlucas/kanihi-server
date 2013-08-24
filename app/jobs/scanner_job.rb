@@ -162,6 +162,7 @@ class ScannerJob < BaseJob
     album_attrs = Hash.new.tap do |attrs|
       attrs[:name] = et_attrs.fetch(:album)
       attrs[:album_artist] = album_artist
+      attrs[:total_discs] = et_attrs.fetch(:disc_num).last
     end
 
     album = Album.unique_record_with_attributes(album_attrs)
