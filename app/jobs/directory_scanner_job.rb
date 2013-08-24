@@ -23,13 +23,13 @@ class DirectoryScannerJob < ScannerJob
 
   def perform
     raise JobError, 'Source is no longer in database' if source.nil?
-
+    
     source_glob = File.join(source.location, '**/*')
     Dir.glob(source_glob) do |filename|
       handle_file(filename) if File.file?(filename)
     end
 
-    source.tracks.all.each do |track|
+    source.tracks.find_each do |track|
       track.destroy unless File.exists?(track.location)
     end
   end

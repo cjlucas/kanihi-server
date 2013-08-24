@@ -1,19 +1,14 @@
 require 'cjutils/path'
 
-class Track < ActiveRecord::Base
+class Track < UniqueRecord
   extend CJUtils::Path
-  attr_accessible :album_artist
-  attr_accessible :album_artist_sort_order
-  attr_accessible :album_name
+  before_destroy :cleanup_dependents
+  
   attr_accessible :comment
   attr_accessible :compilation
   attr_accessible :composer
   attr_accessible :date
-  attr_accessible :disc_num
-  attr_accessible :disc_subtitle
-  attr_accessible :disc_total
   attr_accessible :duration
-  attr_accessible :genre
   attr_accessible :group
   attr_accessible :lyrics
   attr_accessible :mood
@@ -21,25 +16,24 @@ class Track < ActiveRecord::Base
   attr_accessible :original_date
   attr_accessible :size
   attr_accessible :subtitle
-  attr_accessible :track_artist
-  attr_accessible :track_artist_sort_order
-  attr_accessible :track_name
-  attr_accessible :track_num
-  attr_accessible :track_total
+  attr_accessible :name
+  attr_accessible :num
   attr_accessible :location
-  attr_accessible :images
   attr_accessible :filesystem_id
 
   has_and_belongs_to_many :images
   has_and_belongs_to_many :sources
-
-  before_validation :ensure_uuid_exists
+  belongs_to :disc
+  belongs_to :genre
+  belongs_to :track_artist
 
   validates_presence_of :location, :uuid, :filesystem_id
   validates_uniqueness_of :location, :uuid
 
-  def ensure_uuid_exists
-    self.uuid = self.class.generate_uuid if self.uuid.nil?
+  def cleanup_dependents
+    self.disc.destroy if self.disc.tracks.count == 1
+    self.genre.destroy if self.genre.tracks.count == 1
+    self.track_artist.destroy if self.track_artist.tracks.count == 1
   end
 
   def file_modified?
@@ -48,10 +42,6 @@ class Track < ActiveRecord::Base
 
   def location=(location)
     write_attribute(:location, self.class.sanitize_path(location))
-  end
-
-  def self.generate_uuid
-    UUIDTools::UUID.random_create.to_s.downcase
   end
 
   def self.track_for_file_path(fpath)
@@ -66,5 +56,11 @@ class Track < ActiveRecord::Base
     ignore_attribs.each { |attr| attribs.delete(attr) }
 
     where(attribs).first
+  end
+
+  def self.new_with_location(location)
+    new.tap do |track|
+      track.location = sanitize_path(location)
+    end
   end
 end

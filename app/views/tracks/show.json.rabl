@@ -2,21 +2,11 @@ object @track
 
 track_attributes = [
   :uuid,
-  :track_name,
+  :name,
   :subtitle,
-  :track_num,
-  :track_total,
-  :track_artist,
-  :track_artist_sort_order,
-  :album_artist,
-  :album_artist_sort_order,
-  :album_name,
-  :genre,
+  :num,
   :date,
   :original_date,
-  :disc_num,
-  :disc_total,
-  :disc_subtitle,
   :group,
   :lyrics,
   :composer,
@@ -27,6 +17,22 @@ track_attributes = [
 ]
 
 attributes(*track_attributes)
+
+child :track_artist do
+  attributes :uuid, :name, :sort_name
+end
+
+child :disc do
+  attributes :uuid, :num, :subtitle, :total_tracks
+
+  child :album do
+    attributes :uuid, :name, :total_discs
+
+    child :album_artist do
+      attributes :uuid, :name, :sort_name
+    end
+  end
+end
 
 child :images do
   attributes :checksum, :type, :description
