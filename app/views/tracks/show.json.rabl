@@ -22,6 +22,10 @@ child :track_artist do
   attributes :uuid, :name, :sort_name
 end
 
+child :genre do
+  attributes :uuid, :name
+end
+
 child :disc do
   attributes :uuid, :num, :subtitle, :total_tracks
 
