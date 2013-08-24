@@ -2,6 +2,8 @@ require 'cjutils/path'
 
 class Track < UniqueRecord
   extend CJUtils::Path
+  before_destroy :cleanup_dependents
+  
   attr_accessible :comment
   attr_accessible :compilation
   attr_accessible :composer
@@ -27,6 +29,12 @@ class Track < UniqueRecord
 
   validates_presence_of :location, :uuid, :filesystem_id
   validates_uniqueness_of :location, :uuid
+
+  def cleanup_dependents
+    self.disc.destroy if self.disc.tracks.count == 1
+    self.genre.destroy if self.genre.tracks.count == 1
+    self.track_artist.destroy if self.track_artist.tracks.count == 1
+  end
 
   def file_modified?
     (mtime || Time.new(1960)) < File.stat(location).mtime
