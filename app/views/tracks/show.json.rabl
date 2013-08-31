@@ -1,4 +1,4 @@
-object @track
+object :@track
 
 track_attributes = [
   :uuid,

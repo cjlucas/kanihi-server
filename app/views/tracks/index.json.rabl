@@ -1,2 +1,2 @@
-collection @tracks
+collection :@tracks
 extends 'tracks/show'

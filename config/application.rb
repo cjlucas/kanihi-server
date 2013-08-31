@@ -2,7 +2,7 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-require 'rabl'
+require 'rabl-rails'
 require 'time'
 
 require 'digest/sha1'
@@ -16,9 +16,6 @@ Dir[File.join(JOBS_DIR, '*rb')].each { |fpath| require File.basename(fpath) }
 
 require 'uri/file'
 require 'cjutils/path'
-
-Rabl.configure do |config|
-end
 
 require 'fileutils'
 PID_DIR = File.expand_path('../../tmp/pids', __FILE__)
