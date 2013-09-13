@@ -22,7 +22,7 @@ end
 gem 'jquery-rails'
 
 # for json api
-gem 'rabl-rails'
+gem 'rabl'
 
 gem 'easytag', '>= 0.4.3'
 gem 'taglib-ruby', github: 'robinst/taglib-ruby', ref: 'bb6453e2e3404cbc8d1e3056880922797167a218'
