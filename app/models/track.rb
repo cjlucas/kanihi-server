@@ -44,6 +44,31 @@ class Track < UniqueRecord
     write_attribute(:location, self.class.sanitize_path(location))
   end
 
+  def to_hash
+    Hash.new.tap do |hash|
+      [
+          :comment,
+          :compilation,
+          :composer,
+          :date,
+          :duration,
+          :group,
+          :lyrics,
+          :mood,
+          :original_date,
+          :subtitle,
+          :name,
+          :num,
+      ].each { |k| hash[k] = send(k) }
+
+      hash[:disc] = disc.to_hash
+    end
+  end
+
+  def to_json(obj)
+    JSON.dump(track: to_hash)
+  end
+
   def self.track_for_file_path(fpath)
     fpath = sanitize_path(fpath)
 

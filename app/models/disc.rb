@@ -19,4 +19,16 @@ class Disc < UniqueRecord
   def cleanup_dependents
     self.album.destroy if self.album.discs.count == 1
   end
+
+  def to_hash
+    Hash.new.tap do |hash|
+      [:uuid, :num, :subtitle, :total_tracks, :album].each { |k| hash[k] = send(k) }
+
+      hash[:album] = album.to_hash
+    end
+  end
+
+  def to_json(obj)
+    JSON.dump(disc: to_hash)
+  end
 end

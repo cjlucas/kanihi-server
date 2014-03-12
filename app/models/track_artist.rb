@@ -13,5 +13,15 @@ class TrackArtist < UniqueRecord
     write_attribute(:name, name)
     self.name_normalized = self.class.normalize(name)
   end
+
+  def to_hash
+    Hash.new.tap do |hash|
+      [:uuid, :name, :name_normalized, :sort_name].each { |k| hash[k] = send(k) }
+    end
+  end
+
+  def to_json(obj)
+    JSON.dump(track_artist: to_hash)
+  end
 end
 

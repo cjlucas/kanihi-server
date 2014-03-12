@@ -33,4 +33,14 @@ class Image < ActiveRecord::Base
 
     attribs
   end
+
+  def to_hash
+    Hash.new.tap do |hash|
+      [:type, :description, :checksum, :size].each { |k| hash[k] = send(k) }
+    end
+  end
+
+  def to_json(obj)
+    JSON.dump(image: to_hash)
+  end
 end

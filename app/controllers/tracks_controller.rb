@@ -19,7 +19,8 @@ class TracksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json # index.json.rabl
+      format.json { render json: JSON.dump(@tracks.all) } # index.json.rabl
+      #format.json # index.json.rabl
     end
   end
 

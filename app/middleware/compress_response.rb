@@ -5,24 +5,24 @@ class CompressResponse
   SUPPORTED_CONTENT_TYPES = [
     'text/',
     'application/json',
-    'application/xml', 
+    'application/xml',
   ]
 
   def initialize(app)
     @app = app
   end
-  
+
 
   def supported_content_type?
     return false if @headers.nil? || @headers['Content-Type'].nil?
 
     SUPPORTED_CONTENT_TYPES.each do |type|
       return true if @headers['Content-Type'].downcase.include?(type.downcase)
-    end 
+    end
 
     false
   end
-  
+
   def accepts_gzip?
     @env['HTTP_ACCEPT_ENCODING'].downcase.include?('gzip')
   end
@@ -60,7 +60,11 @@ class CompressResponse
   def call(env)
     @env = env
     @status, @headers, @response = @app.call(@env)
-    
+
+    @env.each do |key, value|
+      puts [key, value].to_s if key =~ /^HTTP\_/
+    end
+
     if @env['REQUEST_METHOD'] =~ /GET/
       compress_response if supported_content_type? && accepts_compression?
 

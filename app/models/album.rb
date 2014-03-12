@@ -25,4 +25,16 @@ class Album < UniqueRecord
     self.name_normalized = self.class.normalize(name)
   end
 
+  def to_hash
+    Hash.new.tap do |hash|
+      [:uuid, :name, :name_normalized, :total_discs, :album_artist].each { |k| hash[k] = send(k) }
+
+      hash[:album_artist] = album_artist.to_hash
+    end
+  end
+
+  def to_json(obj)
+    JSON.dump(album: to_hash)
+  end
+
 end
