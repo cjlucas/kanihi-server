@@ -11,7 +11,8 @@ class TracksController < ApplicationController
     @last_updated = DateTime.parse(last_updated_s) unless last_updated_s.nil?
     @last_updated = @last_updated.utc
 
-    @tracks = Track.order('updated_at ASC')
+    @tracks = Track.includes(:genre, :track_artist, :images, disc: [album: :album_artist])
+      .order('updated_at ASC')
       .limit(@limit)
       .offset(@offset)
       .where('updated_at >= ?', @last_updated)
