@@ -61,7 +61,8 @@ class Track < UniqueRecord
           :num,
       ].each { |k| hash[k] = send(k) }
 
-      [:disc, :images].each { |key| hash[key] = send(key).to_hash }
+      hash[:disc] = disc.to_hash
+      hash[:images] = images.to_a.collect { |img| img.to_hash }
     end
   end
 
