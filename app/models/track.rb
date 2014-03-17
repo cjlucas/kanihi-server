@@ -63,6 +63,8 @@ class Track < UniqueRecord
       ].each { |k| hash[k] = send(k) }
 
       hash[:disc] = disc.to_hash
+      hash[:genre] = genre.to_hash
+      hash[:track_artist] = track_artist.to_hash
       hash[:images] = images.to_a.collect { |img| img.to_hash }
     end
   end
