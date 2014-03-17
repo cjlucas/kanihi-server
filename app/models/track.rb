@@ -47,6 +47,7 @@ class Track < UniqueRecord
   def to_hash
     Hash.new.tap do |hash|
       [
+          :uuid,
           :comment,
           :compilation,
           :composer,
