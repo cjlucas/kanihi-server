@@ -1,6 +1,7 @@
 require 'base_job'
 
 class ScannerJob < BaseJob
+  include DestroyTracksMixin
   alias :super_after :after
 
   EASYTAG_ATTRIBUTES = [

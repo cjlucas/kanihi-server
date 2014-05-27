@@ -26,7 +26,7 @@ class TracksController < ApplicationController
 
   # GET /tracks/count
   def count
-    last_updated_s = request.headers['Last-Updated-At']
+    last_updated_s = request.headers['Last-Updated-At'] # TODO: rename to Last-Checked
     @last_updated = Time.at(0) if last_updated_s.nil?
     @last_updated = DateTime.parse(last_updated_s) unless last_updated_s.nil?
     @last_updated = @last_updated.utc
@@ -69,20 +69,18 @@ class TracksController < ApplicationController
     send_data et_img.data, :type => et_img.mime_type, :disposition => :inline
   end
 
-  # POST /tracks/deleted.json
+  # GET /tracks/deleted.json
   # Params (JSON)
   #   - a hash with one key, 'current_tracks', value is an array of uuids
   # Response
   #   - a hash with one key, 'deleted_tracks, value is an array of uuids
   def deleted # Think of a better name
-    json_body = ActiveSupport::JSON.decode(request.body)
-
-    deleted_tracks = json_body['current_tracks']
-    # remove uuid from deleted_tracks array if still exists in db
-    Track.select(:uuid).each { |t| deleted_tracks.delete(t.uuid) }
-
+    last_updated_s = request.headers['Last-Updated-At'] # TODO: rename to Last-Checked
+    last_updated = DateTime.parse(last_updated_s)
+    deleted_track_uuids = []
+    DeletedTrack.where('created_at >= ?', last_updated).find_each { |track| deleted_track_uuids << track.uuid }
     respond_to do |format|
-      format.json { render json: {'deleted_tracks' => deleted_tracks} }
+      format.json { render json: { deleted_tracks: deleted_track_uuids } }
     end
   end
 

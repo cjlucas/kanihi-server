@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130831090000) do
+ActiveRecord::Schema.define(:version => 20140525194400) do
 
   create_table "album_artists", :force => true do |t|
     t.string   "name",            :null => false
@@ -47,6 +47,14 @@ ActiveRecord::Schema.define(:version => 20130831090000) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "deleted_tracks", :force => true do |t|
+    t.string   "uuid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "deleted_tracks", ["created_at"], :name => "index_deleted_tracks_on_created_at"
 
   create_table "discs", :force => true do |t|
     t.integer  "num"

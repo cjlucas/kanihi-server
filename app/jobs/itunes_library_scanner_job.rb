@@ -24,7 +24,9 @@ class ITunesLibraryScannerJob < ScannerJob
     paths = []
     uris.each { |uri| paths << self.class.uri_to_path(uri) }
 
-    Track.where('location NOT IN (?)', paths).each { |track| track.destroy }
+    destroy_tracks do |track_uuids|
+      Track.where('location NOT IN (?)', paths).each { track_uuids << track.uuid }
+    end
 
     #puts "Execution Time: #{Time.now - start}"
     #source.tracks.all.each do |track|

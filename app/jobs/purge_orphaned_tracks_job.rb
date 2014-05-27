@@ -1,9 +1,10 @@
 require 'base_job'
 
 class PurgeOrphanedTracksJob < BaseJob
+  include DestroyTracksMixin
   def perform
-    Track.find_each do |track|
-      track.destroy if track.sources.empty?
+    destroy_tracks do |track_uuids|
+      Track.find_each { |track| track_uuids << track.uuid if track.sources.empty? }
     end
   end
 

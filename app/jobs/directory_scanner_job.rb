@@ -29,9 +29,8 @@ class DirectoryScannerJob < ScannerJob
       handle_file(filename) if File.file?(filename)
     end
 
-    source.tracks.find_each do |track|
-      track.destroy unless File.exists?(track.location)
+    destroy_tracks do |track_uuids|
+      source.tracks.each { |track| track_uuids << track.uuid unless File.exists?(track.location) }
     end
   end
-
 end

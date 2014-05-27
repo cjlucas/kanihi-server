@@ -19,7 +19,7 @@ MusicServer::Application.routes.draw do
   get 'tracks/:id/artwork/:pos', :to => 'tracks#artwork'
   get 'tracks/:id/stream', :to => 'tracks#stream'
 
-  post 'tracks/deleted', :to => 'tracks#deleted'
+  get 'tracks/deleted', :to => 'tracks#deleted'
   get 'tracks/count', :to => 'tracks#count'
 
   resources :tracks
