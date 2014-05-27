@@ -75,10 +75,17 @@ class TracksController < ApplicationController
   # Response
   #   - a hash with one key, 'deleted_tracks, value is an array of uuids
   def deleted # Think of a better name
-    last_updated_s = request.headers['Last-Updated-At'] # TODO: rename to Last-Checked
-    last_updated = DateTime.parse(last_updated_s)
+    last_updated_s  = request.headers['Last-Updated-At'] # TODO: rename to Last-Checked
+    sql_offset      = request.headers['SQL-Offset']
+    sql_limit       = request.headers['SQL-Limit']
+    last_updated    = last_updated_s.nil? ? Time.at(0) : DateTime.parse(last_updated_s)
+
     deleted_track_uuids = []
-    DeletedTrack.where('created_at >= ?', last_updated).find_each { |track| deleted_track_uuids << track.uuid }
+    DeletedTrack.where('created_at >= ?', last_updated)
+      .order('updated_at ASC')
+      .limit(sql_limit)
+      .offset(sql_offset).each { |track| deleted_track_uuids << track.uuid }
+
     respond_to do |format|
       format.json { render json: { deleted_tracks: deleted_track_uuids } }
     end
