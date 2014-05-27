@@ -31,9 +31,9 @@ class Track < UniqueRecord
   validates_uniqueness_of :location, :uuid
 
   def cleanup_dependents
-    self.disc.destroy if self.disc.tracks.count == 1
-    self.genre.destroy if self.genre.tracks.count == 1
-    self.track_artist.destroy if self.track_artist.tracks.count == 1
+    disc.destroy if !disc.nil? && disc.tracks.count == 1
+    genre.destroy if !genre.nil? && genre.tracks.count == 1
+    track_artist.destroy if !track_artist.nil? && track_artist.tracks.count == 1
   end
 
   def file_modified?

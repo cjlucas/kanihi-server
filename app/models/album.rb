@@ -17,7 +17,7 @@ class Album < UniqueRecord
   end
 
   def cleanup_dependents
-    self.album_artist.destroy if self.album_artist.albums.count == 1
+    album_artist.destroy if !album_artist.nil? && album_artist.albums.count == 1
   end
   
   def name=(name)

@@ -17,7 +17,7 @@ class Disc < UniqueRecord
   end
 
   def cleanup_dependents
-    self.album.destroy if self.album.discs.count == 1
+    album.destroy if !album.nil? && album.discs.count == 1
   end
 
   def to_hash
