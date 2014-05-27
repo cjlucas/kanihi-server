@@ -25,8 +25,8 @@ class ScannerJob < BaseJob
     :album_artist,
     :album_artist_sort_order,
     :album_art,
-    :track_num,
-    :disc_num
+    :track_number,
+    :disc_number
     ].freeze
 
   def self.job_for_source(source)
@@ -109,11 +109,7 @@ class ScannerJob < BaseJob
   def handle_easytag_exception(&block)
     begin
       block.call
-    rescue EasyTag::EasyTagFileUnsupportedError => e
-      puts 'ERROR: file unsupported'
-      puts e
     rescue => e
-      puts 'ERROR: unknown'
       puts e
     end
   end
@@ -121,7 +117,7 @@ class ScannerJob < BaseJob
   def et_attrs_for_file_path(fpath)
     attributes = {}
 
-    EasyTag::File.open(fpath) do |et|
+    EasyTag.open(fpath) do |et|
       EASYTAG_ATTRIBUTES.each do |attr|
         attributes[attr] = attrib_or_nil(et.send(attr))
       end
@@ -138,7 +134,7 @@ class ScannerJob < BaseJob
       ].each { |attr| track_attrs[attr] = et_attrs[attr] }
 
       track_attrs[:name] = et_attrs.fetch(:title)
-      track_attrs[:num]  = et_attrs.fetch(:track_num).first
+      track_attrs[:num]  = et_attrs.fetch(:track_number)
     end
   end
 
@@ -162,16 +158,16 @@ class ScannerJob < BaseJob
     album_attrs = Hash.new.tap do |attrs|
       attrs[:name] = et_attrs.fetch(:album)
       attrs[:album_artist] = album_artist
-      attrs[:total_discs] = et_attrs.fetch(:disc_num).last
+      attrs[:total_discs] = et_attrs.fetch(:disc_number)
     end
 
     album = Album.unique_record_with_attributes(album_attrs)
 
     # disc
     disc_attrs = Hash.new.tap do |attrs|
-      attrs[:num] = et_attrs.fetch(:disc_num).first
+      attrs[:num] = et_attrs.fetch(:disc_number)
       attrs[:subtitle] = et_attrs.fetch(:disc_subtitle)
-      attrs[:total_tracks] = et_attrs.fetch(:track_num).last
+      attrs[:total_tracks] = et_attrs.fetch(:track_number)
       attrs[:album] = album
     end
 

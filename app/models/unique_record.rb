@@ -31,6 +31,6 @@ class UniqueRecord < ActiveRecord::Base
   end
 
   def self.normalize(string)
-    ActiveSupport::Inflector.transliterate(string).downcase.strip
+    ActiveSupport::Inflector.transliterate(string.to_s).downcase.strip
   end
 end
