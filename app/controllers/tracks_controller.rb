@@ -80,14 +80,13 @@ class TracksController < ApplicationController
     sql_limit       = request.headers['SQL-Limit']
     last_updated    = last_updated_s.nil? ? Time.at(0) : DateTime.parse(last_updated_s)
 
-    deleted_track_uuids = []
-    DeletedTrack.where('created_at >= ?', last_updated)
+    deleted_track_uuids = DeletedTrack.where('created_at >= ?', last_updated)
       .order('updated_at ASC')
       .limit(sql_limit)
-      .offset(sql_offset).each { |track| deleted_track_uuids << track.uuid }
+      .offset(sql_offset).collect { |track| track.uuid }
 
     respond_to do |format|
-      format.json { render json: { deleted_tracks: deleted_track_uuids } }
+      format.json { render json: deleted_track_uuids }
     end
   end
 
