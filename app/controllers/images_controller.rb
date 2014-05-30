@@ -19,7 +19,7 @@ class ImagesController < ApplicationController
     @image.tracks.each do |track|
       next unless File.exists?(track.location)
 
-      et = EasyTag::File.new(track.location)
+      et = EasyTag.open(track.location)
       et.album_art.each do |album_art|
         temp_img = Image.image_for_data(album_art.data)
         if temp_img.checksum == @image.checksum \
