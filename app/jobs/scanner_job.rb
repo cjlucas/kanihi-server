@@ -11,7 +11,7 @@ class ScannerJob < BaseJob
     :compilation?,
     :date,
     :disc_subtitle,
-    :duration,
+    :length,
     :genre,
     :group,
     :lyrics,
@@ -134,8 +134,9 @@ class ScannerJob < BaseJob
         :lyrics, :mood, :subtitle
       ].each { |attr| track_attrs[attr] = et_attrs[attr] }
 
-      track_attrs[:name] = et_attrs.fetch(:title)
-      track_attrs[:num]  = et_attrs.fetch(:track_number)
+      track_attrs[:name]      = et_attrs.fetch(:title)
+      track_attrs[:num]       = et_attrs.fetch(:track_number)
+      track_attrs[:duration]  = et_attrs.fetch(:length)
     end
   end
 
