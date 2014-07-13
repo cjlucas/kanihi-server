@@ -79,14 +79,6 @@ class Track < UniqueRecord
     where(location: fpath).first
   end
 
-  def self.track_for_attributes(attribs)
-    attribs = attribs.dup
-    ignore_attribs = [:mtime, :images, :location, :date, :original_date]
-    ignore_attribs.each { |attr| attribs.delete(attr) }
-
-    where(attribs).first
-  end
-
   def self.new_with_location(location)
     new.tap do |track|
       track.location = sanitize_path(location)

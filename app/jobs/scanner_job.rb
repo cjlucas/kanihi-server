@@ -79,18 +79,6 @@ class ScannerJob < BaseJob
       force_update = true
     end
 
-    # lookup by attributes
-    if t.nil?
-      handle_easytag_exception do 
-        easytag_attrs = et_attrs_for_file_path(fpath)
-      end
-      return nil if easytag_attrs.empty?
-
-      attribs = track_attributes_for_et_attrs(easytag_attrs)
-      t = Track.track_for_attributes(attribs)
-      force_update = true
-    end
-
     # create track if one doesn't already exist
     t ||= Track.new_with_location(fpath)
 
@@ -119,9 +107,29 @@ class ScannerJob < BaseJob
     attributes = {}
 
     EasyTag.open(fpath) do |et|
-      EASYTAG_ATTRIBUTES.each do |attr|
-        attributes[attr] = attrib_or_nil(et.send(attr))
-      end
+      attributes[:album] = et.album
+      attributes[:album_sort_order] = et.album_sort_order
+      attributes[:composer] = et.composer
+      attributes[:compilation?] = et.compilation?
+      attributes[:date] = et.date
+      attributes[:disc_subtitle] = et.disc_subtitle
+      attributes[:length] = et.length
+      attributes[:genre] = et.genre
+      attributes[:group] = et.group
+      attributes[:lyrics] = et.lyrics
+      attributes[:mood] = et.mood
+      attributes[:original_date] = et.original_date
+      attributes[:subtitle] = et.subtitle
+      attributes[:artist] = et.artist
+      attributes[:artist_sort_order] = et.artist_sort_order
+      attributes[:title] = et.title
+      attributes[:title_sort_order] = et.title_sort_order
+      attributes[:comment] = et.comment
+      attributes[:album_artist] = et.album_artist
+      attributes[:album_artist_sort_order] = et.album_artist_sort_order
+      attributes[:album_art] = et.album_art
+      attributes[:track_number] = et.track_number
+      attributes[:disc_number] = et.disc_number
     end
 
     attributes
@@ -231,17 +239,6 @@ class ScannerJob < BaseJob
       attrib.empty? ? fallback : attrib
     when klass == Fixnum
       attrib == 0 ? fallback : attrib
-    end
-  end
-
-  def attrib_or_nil(attrib)
-    klass = attrib.class
-
-    case
-    when klass == String
-      attrib.empty? ? nil : attrib
-    else
-      attrib
     end
   end
 end
