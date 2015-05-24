@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo server
-script/server $1
-echo job_scheduler
-script/job_scheduler $1
-echo delayed_job
-script/delayed_job $1

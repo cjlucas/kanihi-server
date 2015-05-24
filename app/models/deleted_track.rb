@@ -1,2 +1,0 @@
-class DeletedTrack < UniqueRecord
-end
