@@ -1,24 +1,37 @@
-*.gem
-*.lock
-*.rbc
-.bundle
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
-*.log
-db/*sqlite3
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
 
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
+# Folders
+_obj
+_test
 
-/.ruby-gemset
-/.ruby-version
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
+
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+_testmain.go
+
+*.exe
+*.test
+*.prof
+
+out
+
+/.envrc
+
+/bin
+/pkg
+/src/*
+!/src/github.com
+/src/github.com/*
+!/src/github.com/cjlucas
+/src/github.com/cjlucas/*
+!/src/github.com/cjlucas/kanihi-server
